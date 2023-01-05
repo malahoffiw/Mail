@@ -10,7 +10,7 @@ const Header = () => {
             </h1>
             <MdOutlineSearch size={24} />
             <button
-                className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
+                className={`${styles.btnSmallDarker} ${styles.transition} bg-ruby`}
                 onClick={() => signOut()}
             >
                 Sign out
