@@ -12,6 +12,7 @@ export const messagesRouter = router({
             const messages = await ctx.prisma.message.findMany({
                 where: {
                     recipientId: ctx.session.user.id,
+                    isDraft: false,
                 },
                 select: {
                     id: true,

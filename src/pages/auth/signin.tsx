@@ -29,13 +29,13 @@ const Signin = ({ providers }: SignInProps) => {
 
     return (
         <main className="absolute min-w-full min-h-full overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
-            <div className="p-4 m-4 grid grid-cols-[1fr_2fr] w-10/12 h-1/2">
-                <div className="bg-neutral-100 text-neutral-900 flex flex-col items-center justify-center gap-2">
+            <div className="p-4 m-4 grid grid-cols-[1fr_2fr] w-10/12 h-1/2 rounded">
+                <div className="bg-neutral-100 text-neutral-900 flex flex-col items-center justify-center gap-2 rounded-tl rounded-bl">
                     <p className="text-lg">Welcome back!</p>
                     <div className="bg-green h-1.5 w-10/12 rounded"></div>
                     <p className="text-sm">Sign in to continue</p>
                 </div>
-                <div className="bg-neutral-800 grid place-items-center">
+                <div className="bg-neutral-800 grid place-items-center rounded-tr rounded-br">
                     {Object.values(providers).map((provider) => (
                         <div key={provider.name}>
                             <button
