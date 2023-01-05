@@ -6,6 +6,7 @@ import type {
     InboxMessage,
     SentMessage,
 } from "../../types/message"
+import styles from "../../styles"
 
 type MessageListProps = {
     messages: (InboxMessage | SentMessage | DraftMessage)[]
@@ -17,7 +18,7 @@ const MessageList = ({ messages }: MessageListProps) => {
             {messages.map((message) => (
                 <div
                     key={message.id}
-                    className="flex p-1 px-2 gap-1 h-fit min-w-full bg-neutral-800 rounded hover:bg-neutral-700 cursor-pointer"
+                    className={`${styles.transition} ${styles.btnSmall} flex gap-1 h-fit min-w-full bg-neutral-800 hover:brightness-125 p-2 py-1 rounded cursor-pointer`}
                 >
                     <BiUserCircle size={32} />
                     <div className="relative w-full">

@@ -1,5 +1,6 @@
 import { MdOutlineSearch } from "react-icons/md"
 import { signOut } from "next-auth/react"
+import styles from "../styles"
 
 const Header = () => {
     return (
@@ -9,7 +10,7 @@ const Header = () => {
             </h1>
             <MdOutlineSearch size={24} />
             <button
-                className="p-2 py-1 bg-neutral-800 rounded hover:bg-neutral-700 cursor-pointer"
+                className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
                 onClick={() => signOut()}
             >
                 Sign out
