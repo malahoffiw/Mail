@@ -12,8 +12,10 @@ import Header from "@/Header"
 
 const MyApp: AppType<{ session: Session | null }> = ({
     Component,
-    pageProps: { session, ...pageProps },
+    pageProps,
 }) => {
+    const { session } = pageProps
+
     return (
         <SessionProvider session={session}>
             <Provider store={store}>

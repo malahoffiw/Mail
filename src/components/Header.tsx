@@ -1,11 +1,19 @@
-import { MdOutlineAlternateEmail, MdOutlineSearch } from "react-icons/md"
+import { MdOutlineSearch } from "react-icons/md"
+import { signOut } from "next-auth/react"
 
 const Header = () => {
     return (
-        <header className="col-span-2 border-b flex text-neutral-100 h-14 items-center p-4">
-            <MdOutlineAlternateEmail size={24} />
-            <h1 className="text-xl font-bold mx-auto">Входящие</h1>
+        <header className="col-span-2 border-b flex gap-2 text-neutral-100 h-14 items-center p-4">
+            <h1 className="text-lg font-bold flex items-center gap-2 mr-auto">
+                Входящие
+            </h1>
             <MdOutlineSearch size={24} />
+            <button
+                className="p-2 py-1 bg-neutral-800 rounded hover:bg-neutral-700 cursor-pointer"
+                onClick={() => signOut()}
+            >
+                Sign out
+            </button>
         </header>
     )
 }

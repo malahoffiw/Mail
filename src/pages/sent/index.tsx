@@ -1,9 +1,9 @@
 import type { NextPage } from "next"
-import { signOut } from "next-auth/react"
 import Error from "next/error"
-import MessageList from "@/pages/MessageList"
 import useMessagesSelector from "../../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../../hooks/store/useMessagesInitialize"
+
+import MessageList from "@/pages/MessageList"
 
 export { getServerSideProps } from "../index"
 
@@ -24,14 +24,6 @@ const Sent: NextPage = () => {
             <div className="w-full rounded text-neutral-100 flex flex-col gap-1">
                 <MessageList messages={messages} />
             </div>
-            <br />
-            <button
-                onClick={() => {
-                    signOut()
-                }}
-            >
-                Sign out
-            </button>
         </main>
     )
 }
