@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import type { GetServerSideProps } from "next"
 import { useRouter } from "next/router"
 import { getServerAuthSession } from "../../server/common/get-server-auth-session"
@@ -34,9 +34,12 @@ const Signup = () => {
     const updateName = trpc.users.updateName.useMutation()
     const router = useRouter()
 
+    const isUsernameTaken = useState(false)
+    const [, setIsUsernameTaken] = isUsernameTaken
+
     const onSubmit = (username: string) => {
         if (existingNames && existingNames.includes(username)) {
-            console.warn("Username already exists")
+            setIsUsernameTaken(true)
             return
         }
 
@@ -48,9 +51,12 @@ const Signup = () => {
 
     return (
         <main className="absolute min-w-full min-h-full overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
-            <div className="p-10 m-4 bg-neutral-800 rounded flex flex-col items-center justify-center gap-6">
+            <div className="p-10 m-4 h-72 bg-neutral-800 rounded flex flex-col items-center justify-center gap-6">
                 <p className="text-lg">Create a username</p>
-                <SignupForm onSubmit={onSubmit} />
+                <SignupForm
+                    onSubmit={onSubmit}
+                    isUsernameTaken={isUsernameTaken}
+                />
             </div>
         </main>
     )
