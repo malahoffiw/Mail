@@ -5,8 +5,8 @@ import type {
     DraftMessage,
     InboxMessage,
     SentMessage,
-} from "../../types/message"
-import styles from "../../styles"
+} from "../../../types/message"
+import styles from "../../../styles"
 
 type MessageListProps = {
     messages: (InboxMessage | SentMessage | DraftMessage)[]

@@ -4,7 +4,7 @@ import { getServerAuthSession } from "../server/common/get-server-auth-session"
 import useMessagesSelector from "../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../hooks/store/useMessagesInitialize"
 
-import Messages from "@/pages/Messages"
+import Messages from "@/pages/messages"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)

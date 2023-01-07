@@ -3,7 +3,7 @@ import Error from "next/error"
 import useMessagesSelector from "../../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../../hooks/store/useMessagesInitialize"
 
-import Messages from "@/pages/Messages"
+import Messages from "@/pages/messages"
 
 export { getServerSideProps } from "../index"
 

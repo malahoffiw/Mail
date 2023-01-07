@@ -3,9 +3,9 @@ import type {
     DraftMessage,
     InboxMessage,
     SentMessage,
-} from "../../types/message"
+} from "../../../types/message"
 
-import MessageList from "@/pages/MessageList"
+import MessageList from "@/pages/messages/MessageList"
 
 type MessagesProps = {
     messages: (InboxMessage | SentMessage | DraftMessage)[]
