@@ -15,7 +15,9 @@ const Sidebar = () => {
             <li
                 className={`${styles.icon} ${styles.transition} bg-green text-neutral-100 hover:brightness-75`}
             >
-                <BiPencil size={ICON_SIZE} />
+                <Link href="/new">
+                    <BiPencil size={ICON_SIZE} />
+                </Link>
             </li>
             <li className={iconStyles}>
                 <Link href="/">

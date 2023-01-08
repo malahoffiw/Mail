@@ -1,6 +1,6 @@
 import React from "react"
 import type { NextPage } from "next"
-import MessageForm from "@/pages/newMessage/MessageForm"
+import MessageForm from "@/pages/newMessage"
 
 const New: NextPage = () => {
     return (

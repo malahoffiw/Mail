@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import type { Editor } from "tinymce"
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react"
-import { env } from "../../../env/client.mjs"
+import { env } from "../../../../env/client.mjs"
 
-import initOptions from "@/pages/newMessage/initOptions"
+import initOptions from "@/pages/newMessage/Editor/initOptions"
 
 type MessageEditorProps = {
     editorRef: React.MutableRefObject<Editor | null>
