@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import type { Editor } from "tinymce"
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react"
@@ -7,12 +7,10 @@ import { env } from "../../../env/client.mjs"
 import initOptions from "@/pages/newMessage/initOptions"
 
 type MessageEditorProps = {
-    // editorRef: React.MutableRefObject<Editor>
+    editorRef: React.MutableRefObject<Editor | null>
 }
 
-const MessageEditor = ({}: MessageEditorProps) => {
-    const editorRef = useRef<Editor | null>(null)
-
+const MessageEditor = ({ editorRef }: MessageEditorProps) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     useEffect(() => {
         function watchWindow() {

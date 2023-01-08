@@ -25,6 +25,7 @@ const SignupForm = ({ onSubmit, isUsernameTaken }: SignupFormProps) => {
             className="flex flex-col gap-4"
         >
             <input
+                // todo - onInvalid try to use custom
                 className={`outline-0 border-0 text-neutral-900 p-4 py-1 rounded`}
                 type="text"
                 placeholder="Username"

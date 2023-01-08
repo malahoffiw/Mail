@@ -108,7 +108,7 @@ export const messagesRouter = router({
             z.object({
                 subject: z.string(),
                 body: z.string(),
-                files: z.array(z.string()), // todo
+                // files: z.array(z.string()), // todo
                 recipientId: z.string(),
                 replyToId: z.string().optional(),
             })
@@ -133,7 +133,7 @@ export const messagesRouter = router({
             z.object({
                 subject: z.string(),
                 body: z.string(),
-                files: z.array(z.string()), // todo
+                // files: z.array(z.string()), // todo
                 recipientId: z.string().optional(),
                 replyToId: z.string().optional(),
             })
@@ -159,7 +159,7 @@ export const messagesRouter = router({
                 id: z.string(),
                 subject: z.string(),
                 body: z.string(),
-                files: z.array(z.string()), // todo
+                // files: z.array(z.string()), // todo
                 recipientId: z.string().optional(),
                 replyToId: z.string().optional(),
             })
