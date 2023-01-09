@@ -30,7 +30,7 @@ const Signin = ({ providers }: SignInProps) => {
     if (!providers) return <Error statusCode={400} />
 
     return (
-        <main className="absolute min-w-full min-h-full overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
+        <main className="w-screen h-screen overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
             <div
                 className={
                     "w-72 sm:w-min h-72 grid-rows-[2fr_1fr] sm:grid-cols-[1fr_2fr] p-4 m-4 grid rounded"

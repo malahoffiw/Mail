@@ -16,9 +16,9 @@ const MessageList = ({ messages }: MessageListProps) => {
     return (
         <>
             {messages.map((message) => (
-                <div
+                <li
                     key={message.id}
-                    className={`${styles.transition} ${styles.btnSmallLighter} flex gap-1 h-fit min-w-full bg-neutral-800`}
+                    className={`${styles.transition} ${styles.messageLine} grid grid-cols-[32px_minmax(140px,_1fr)_48px] gap-1 bg-neutral-800`}
                 >
                     <BiUserCircle size={32} />
                     <div className="relative w-full">
@@ -27,12 +27,12 @@ const MessageList = ({ messages }: MessageListProps) => {
                             {message.body}
                         </p>
                     </div>
-                    <div>
+                    <div className="justify-self-end">
                         <p className="text-sm text-neutral-600">
                             {dayjs(message.createdAt).format("DD/MM")}
                         </p>
                     </div>
-                </div>
+                </li>
             ))}
         </>
     )

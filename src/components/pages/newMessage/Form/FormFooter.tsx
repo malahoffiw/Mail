@@ -9,13 +9,13 @@ const FormFooter = () => {
         <footer className="self-end flex gap-2">
             <button
                 onClick={() => router.back()}
-                className={`${styles.btnSmallDarker} ${styles.transition} bg-ruby`}
+                className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
                 type="button"
             >
                 Back
             </button>
             <button
-                className={`${styles.btnSmallDarker} ${styles.transition} bg-green`}
+                className={`${styles.btnSmall} ${styles.transition} bg-green`}
                 type="submit"
             >
                 Send

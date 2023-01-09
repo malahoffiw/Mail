@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import dynamic from "next/dynamic"
 import type { Editor } from "tinymce"
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react"
 import { env } from "../../../../env/client.mjs"
+import useWindowWidth from "../../../../hooks/utils/useWindowWidth"
 
 import initOptions from "@/pages/newMessage/Editor/initOptions"
 
@@ -11,17 +12,7 @@ type MessageEditorProps = {
 }
 
 const MessageEditor = ({ editorRef }: MessageEditorProps) => {
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    useEffect(() => {
-        function watchWindow() {
-            setWindowWidth(window.innerWidth)
-        }
-        window.addEventListener("resize", watchWindow)
-
-        return () => {
-            window.removeEventListener("resize", watchWindow)
-        }
-    }, [])
+    const windowWidth = useWindowWidth()
 
     return (
         <TinyMCEEditor

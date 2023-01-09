@@ -21,7 +21,7 @@ const submitMessageRecipient = async (
 ) => {
     if (!recipient.exists) {
         const user = await getUser(recipient.name)
-        if (!user) {
+        if (!user?.id) {
             setRecipient({ ...recipient, exists: false })
         } else {
             setRecipient({ ...recipient, id: user.id, exists: true })

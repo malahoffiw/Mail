@@ -30,9 +30,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 }
 
 const Signup = () => {
+    const router = useRouter()
     const { data: existingNames } = trpc.users.getNames.useQuery()
     const updateName = trpc.users.updateName.useMutation()
-    const router = useRouter()
 
     const isUsernameTaken = useState(false)
     const [, setIsUsernameTaken] = isUsernameTaken
@@ -50,7 +50,7 @@ const Signup = () => {
     }
 
     return (
-        <main className="absolute min-w-full min-h-full overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
+        <main className="w-screen h-screen overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
             <div className="p-10 m-4 h-72 bg-neutral-800 rounded flex flex-col items-center justify-center gap-6">
                 <p className="text-lg">Create a username</p>
                 <SignupForm

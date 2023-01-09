@@ -21,10 +21,10 @@ const Messages = ({ messages }: MessagesProps) => {
     }
 
     return (
-        <main className="min-h-max min-w-max bg-neutral-800 p-2 pb-10 m-4 mt-0 rounded">
-            <div className="min-w-max rounded text-neutral-100 flex flex-col gap-1">
+        <main className="min-h-max min-w-max text-neutral-100 bg-neutral-800 p-2 mb-10 m-4 mt-2 rounded overflow-auto">
+            <ul className="rounded flex flex-col gap-1">
                 <MessageList messages={messages} />
-            </div>
+            </ul>
         </main>
     )
 }

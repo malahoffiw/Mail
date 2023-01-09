@@ -1,47 +1,160 @@
+import type { Dispatch, SetStateAction } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
+import { motion } from "framer-motion"
 import { BiPencil, BiTrash } from "react-icons/bi"
 import { MdOutlineMailOutline } from "react-icons/md"
 import { RiSpam3Line, RiDraftLine } from "react-icons/ri"
 import { TiArrowBackOutline } from "react-icons/ti"
+import { FiChevronRight } from "react-icons/fi"
+import useWindowWidth from "../hooks/utils/useWindowWidth"
 import styles from "../styles"
 
 const ICON_SIZE = 24
 
-const Sidebar = () => {
-    const iconStyles = `${styles.icon} ${styles.transition} bg-neutral-900 hover:brightness-200`
+type SidebarProps = {
+    state: "open" | "closed"
+    setState: Dispatch<SetStateAction<"open" | "closed">>
+}
+
+const Sidebar = ({ state, setState }: SidebarProps) => {
+    const windowWidth = useWindowWidth()
+
+    const closeSidebar = () => {
+        state === "open" && setState("closed")
+    }
+
+    const animationVariants = {
+        mobile: {
+            open: {
+                width: "100vw",
+                x: 0,
+            },
+            closed: {
+                width: "100vw",
+                x: "-100%",
+            },
+        },
+        desktop: {
+            open: { width: "152px", x: 0 },
+            closed: { width: "40px", x: 0 },
+        },
+    }
 
     return (
-        <ul className="flex flex-col gap-2 w-12 items-center m-2 mt-4">
-            <li
-                className={`${styles.icon} ${styles.transition} bg-green text-neutral-100 hover:brightness-75`}
-            >
-                <Link href="/new">
+        <motion.ul
+            animate={state}
+            variants={
+                windowWidth > 640
+                    ? animationVariants.desktop
+                    : animationVariants.mobile
+            }
+            className={
+                windowWidth > 640 ? styles.sidebarDesktop : styles.sidebarMobile
+            }
+        >
+            <li className={`${styles.sidebarIconMain} ${styles.transition}`}>
+                <Link
+                    href={"/new"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
                     <BiPencil size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Compose</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
                 </Link>
             </li>
-            <li className={iconStyles}>
-                <Link href="/">
+            <li
+                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+            >
+                <Link
+                    href={"/"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
                     <MdOutlineMailOutline size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Inbox</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
                 </Link>
             </li>
-            <li className={iconStyles}>
-                <Link href={"/sent"}>
+            <li
+                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+            >
+                <Link
+                    href={"/sent"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
                     <TiArrowBackOutline size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Sent</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
                 </Link>
             </li>
-            <li className={iconStyles}>
-                <Link href={"/drafts"}>
+            <li
+                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+            >
+                <Link
+                    href={"/drafts"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
                     <RiDraftLine size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Drafts</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
                 </Link>
             </li>
-            <li className={iconStyles}>
-                <RiSpam3Line size={ICON_SIZE} />
+            <li
+                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+            >
+                <Link
+                    href={"/"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
+                    <RiSpam3Line size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Spam</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
+                </Link>
             </li>
-            <li className={iconStyles}>
-                <BiTrash size={ICON_SIZE} />
+            <li
+                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+            >
+                <Link
+                    href={"/"}
+                    onClick={closeSidebar}
+                    className={styles.sidebarBtn}
+                >
+                    <BiTrash size={ICON_SIZE} />
+                    {state === "open" && (
+                        <>
+                            <p>Trash</p>
+                            <FiChevronRight size={ICON_SIZE} />
+                        </>
+                    )}
+                </Link>
             </li>
-        </ul>
+        </motion.ul>
     )
 }
 
-export default Sidebar
+export default dynamic(() => Promise.resolve(Sidebar), { ssr: false })
