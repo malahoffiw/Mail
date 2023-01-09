@@ -3,7 +3,6 @@ import dynamic from "next/dynamic"
 import type { Editor } from "tinymce"
 import { Editor as TinyMCEEditor } from "@tinymce/tinymce-react"
 import { env } from "../../../../env/client.mjs"
-import useWindowWidth from "../../../../hooks/utils/useWindowWidth"
 
 import initOptions from "@/pages/newMessage/Editor/initOptions"
 
@@ -12,17 +11,16 @@ type MessageEditorProps = {
 }
 
 const MessageEditor = ({ editorRef }: MessageEditorProps) => {
-    const windowWidth = useWindowWidth()
-
     return (
         <TinyMCEEditor
             apiKey={env.NEXT_PUBLIC_TINYMCE_API_KEY}
             onInit={(evt, editor) => (editorRef.current = editor)}
             init={{
                 // todo - somethings wrong with width
-                // editor doesn't resize on window resize
-                // useEffect decision is just for now (works only on page reload)
-                width: windowWidth - 128,
+                // when mobile works fine, breaks when sidebar on the left side appears
+                // todo - try to use other ideas
+                // for example a custom tinymce sidebar with all required tools from toolbar (https://www.tiny.cloud/docs/tinymce/6/customsidebar/)
+                // or just inline toolbar only when windowWidth > 640px
                 ...initOptions,
             }}
         />

@@ -5,3 +5,30 @@
 body {
     @apply bg-neutral-900 text-neutral-100 text-base;
 }
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    background: #343a40;
+}
+
+@media (hover: none) {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar-thumb {
+    background: #6c757d;
+    border-radius: 4px;
+}
+
+::selection {
+    background: #3bb273;
+    color: #212529;
+}
+
+::-moz-selection {
+    background: #3bb273;
+    color: #212529;
+}

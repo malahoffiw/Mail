@@ -17,6 +17,8 @@ type SidebarProps = {
     setState: Dispatch<SetStateAction<"open" | "closed">>
 }
 
+// todo - disable and style (like when hovered) btn according to page (eg. disable "Drafts" btn when on drafts page)
+
 const Sidebar = ({ state, setState }: SidebarProps) => {
     const windowWidth = useWindowWidth()
 
@@ -53,12 +55,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                 windowWidth > 640 ? styles.sidebarDesktop : styles.sidebarMobile
             }
         >
-            <li className={`${styles.sidebarIconMain} ${styles.transition}`}>
-                <Link
-                    href={"/new"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+            <Link
+                href={"/new"}
+                onClick={closeSidebar}
+                className={`${styles.sidebarIconMain} ${styles.transition}`}
+            >
+                <li className={styles.sidebarBtn}>
                     <BiPencil size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -66,16 +68,14 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
-            <li
+                </li>
+            </Link>
+            <Link
+                href={"/"}
+                onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${styles.transition}`}
             >
-                <Link
-                    href={"/"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+                <li className={styles.sidebarBtn}>
                     <MdOutlineMailOutline size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -83,16 +83,14 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
-            <li
+                </li>
+            </Link>
+            <Link
+                href={"/sent"}
+                onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${styles.transition}`}
             >
-                <Link
-                    href={"/sent"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+                <li className={styles.sidebarBtn}>
                     <TiArrowBackOutline size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -100,16 +98,14 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
-            <li
+                </li>
+            </Link>
+            <Link
+                href={"/drafts"}
+                onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${styles.transition}`}
             >
-                <Link
-                    href={"/drafts"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+                <li className={styles.sidebarBtn}>
                     <RiDraftLine size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -117,16 +113,14 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
-            <li
+                </li>
+            </Link>
+            <Link
+                href={"/"}
+                onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${styles.transition}`}
             >
-                <Link
-                    href={"/"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+                <li className={styles.sidebarBtn}>
                     <RiSpam3Line size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -134,16 +128,14 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
-            <li
+                </li>
+            </Link>
+            <Link
+                href={"/"}
+                onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${styles.transition}`}
             >
-                <Link
-                    href={"/"}
-                    onClick={closeSidebar}
-                    className={styles.sidebarBtn}
-                >
+                <li className={styles.sidebarBtn}>
                     <BiTrash size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -151,8 +143,8 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                             <FiChevronRight size={ICON_SIZE} />
                         </>
                     )}
-                </Link>
-            </li>
+                </li>
+            </Link>
         </motion.ul>
     )
 }

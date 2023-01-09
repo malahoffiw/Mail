@@ -25,8 +25,9 @@ const Header = ({ setSidebarState }: HeaderProps) => {
     const currentPage = pageNames[router.pathname as keyof typeof pageNames]
 
     return (
-        <header className="col-span-2 border-b flex gap-4 text-neutral-100 h-14 items-center p-6">
+        <header className="col-span-2 border-b flex gap-4 text-neutral-100 h-14 items-center px-6">
             <MdMenu
+                className="cursor-pointer hover:scale-110"
                 size={24}
                 onClick={() =>
                     setSidebarState((prevState) =>
