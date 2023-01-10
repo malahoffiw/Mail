@@ -6,6 +6,8 @@ import type {
     InboxMessage,
     SentMessage,
 } from "../../../types/message"
+import { useAppDispatch } from "../../../hooks/redux"
+import { assignMessage, openModal } from "../../../store/reducers/modal"
 import styles from "../../../styles"
 
 type MessageListProps = {
@@ -13,10 +15,20 @@ type MessageListProps = {
 }
 
 const MessageList = ({ messages }: MessageListProps) => {
+    const dispatch = useAppDispatch()
+
+    const openMessageModal = (id: string) => {
+        dispatch(assignMessage(id))
+        dispatch(openModal())
+    }
+
     return (
         <>
             {messages.map((message) => (
                 <li
+                    onClick={() => {
+                        openMessageModal(message.id)
+                    }}
                     key={message.id}
                     className={`${styles.transition} ${styles.messageLine} grid grid-cols-[32px_minmax(140px,_1fr)_48px] gap-1 bg-neutral-800`}
                 >

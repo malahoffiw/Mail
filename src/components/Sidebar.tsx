@@ -11,11 +11,28 @@ import { FiChevronRight } from "react-icons/fi"
 import useWindowWidth from "../hooks/utils/useWindowWidth"
 import styles from "../styles"
 
-const ICON_SIZE = 24
+export const ICON_SIZE = 24
 
 type SidebarProps = {
     state: "open" | "closed"
     setState: Dispatch<SetStateAction<"open" | "closed">>
+}
+
+const animationVariants = {
+    mobile: {
+        open: {
+            width: "100vw",
+            x: 0,
+        },
+        closed: {
+            width: "100vw",
+            x: "-100%",
+        },
+    },
+    desktop: {
+        open: { width: "152px", x: 0 },
+        closed: { width: "40px", x: 0 },
+    },
 }
 
 const Sidebar = ({ state, setState }: SidebarProps) => {
@@ -25,23 +42,6 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
 
     const closeSidebar = () => {
         state === "open" && setState("closed")
-    }
-
-    const animationVariants = {
-        mobile: {
-            open: {
-                width: "100vw",
-                x: 0,
-            },
-            closed: {
-                width: "100vw",
-                x: "-100%",
-            },
-        },
-        desktop: {
-            open: { width: "152px", x: 0 },
-            closed: { width: "40px", x: 0 },
-        },
     }
 
     return (

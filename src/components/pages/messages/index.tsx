@@ -7,6 +7,7 @@ import type {
 import styles from "../../../styles"
 
 import MessageList from "@/pages/messages/MessageList"
+import MessageModal from "@/pages/messages/MessageModal"
 
 type MessagesProps = {
     messages: (InboxMessage | SentMessage | DraftMessage)[]
@@ -22,10 +23,11 @@ const Messages = ({ messages }: MessagesProps) => {
     }
 
     return (
-        <main className="min-h-max min-w-max text-neutral-100 bg-neutral-800 p-2 m-4 my-2 rounded overflow-auto">
+        <main className="relative min-h-max text-neutral-100 bg-neutral-800 p-2 m-4 my-2 rounded overflow-auto">
             <ul className="rounded flex flex-col gap-1">
                 <MessageList messages={messages} />
             </ul>
+            <MessageModal />
         </main>
     )
 }

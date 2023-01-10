@@ -5,6 +5,7 @@ import dynamic from "next/dynamic"
 import { MdMenu, MdOutlineSearch } from "react-icons/md"
 import useWindowWidth from "../../hooks/utils/useWindowWidth"
 import styles from "../../styles"
+import { ICON_SIZE } from "@/Sidebar"
 
 type HeaderProps = {
     setSidebarState: Dispatch<SetStateAction<"open" | "closed">>
@@ -28,7 +29,7 @@ const Header = ({ setSidebarState }: HeaderProps) => {
         <header className="col-span-2 border-b flex gap-4 text-neutral-100 h-14 items-center px-6">
             <MdMenu
                 className="cursor-pointer hover:scale-110"
-                size={24}
+                size={ICON_SIZE}
                 onClick={() =>
                     setSidebarState((prevState) =>
                         prevState === "open" ? "closed" : "open"
@@ -38,7 +39,7 @@ const Header = ({ setSidebarState }: HeaderProps) => {
             <h1 className="text-lg font-bold flex items-center gap-2 mr-auto">
                 {windowWidth > 320 && currentPage}
             </h1>
-            <MdOutlineSearch size={24} />
+            <MdOutlineSearch size={ICON_SIZE} />
             <button
                 className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
                 onClick={() => signOut()}
