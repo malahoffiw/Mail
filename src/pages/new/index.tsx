@@ -4,7 +4,7 @@ import MessageForm from "@/pages/newMessage"
 
 const New: NextPage = () => {
     return (
-        <main className="min-h-max min-w-max bg-neutral-800 p-4 pb-10 m-4 mt-0 rounded flex flex-col gap-4">
+        <main className="min-h-max min-w-max bg-neutral-800 p-4 m-4 my-2 rounded flex flex-col gap-4 overflow-auto">
             <MessageForm />
         </main>
     )

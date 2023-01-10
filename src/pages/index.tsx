@@ -5,6 +5,7 @@ import useMessagesSelector from "../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../hooks/store/useMessagesInitialize"
 
 import Messages from "@/pages/messages"
+import Loader from "@/Loader"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)
@@ -35,7 +36,7 @@ const Inbox: NextPage = () => {
     const { messages, status } = useMessagesSelector("inbox")
 
     if (status.pending) {
-        return <div>Loading...</div>
+        return <Loader />
     }
 
     if (status.error) {

@@ -8,11 +8,11 @@ export type Recipient = {
 }
 
 // todo - create a throttle or debounce function
-const getUser = async (id: string) => {
-    if (id.length === 0) {
+const getUser = async (name: string) => {
+    if (name.length === 0) {
         return null
     }
-    return await client.users.getUser.query(id)
+    return await client.users.getUser.query(name)
 }
 
 const submitMessageRecipient = async (

@@ -37,7 +37,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
                     {/*<link rel="apple-touch-icon" href="/apple-touch-icon.png" />*/}
                     {/*<link rel="manifest" href="/site.webmanifest" />*/}
                 </Head>
-                <div className="grid grid-cols-1 sm:grid-cols-none sm:auto-cols-[min-content_1fr] grid-rows-[64px_1fr] h-screen">
+                <div className="grid grid-cols-1 sm:grid-cols-none sm:auto-cols-[min-content_1fr] grid-rows-[64px_1fr] h-screen w-screen">
                     {router.pathname !== "/auth/signin" &&
                         router.pathname !== "/auth/signup" && (
                             <>

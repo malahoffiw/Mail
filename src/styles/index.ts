@@ -18,6 +18,9 @@ const styles = {
         "p-4 bg-neutral-900",
     sidebarDesktop: "m-4 mt-2 flex flex-col gap-1 items-center",
     sidebarBtn: "grid grid-cols-[24px_1fr_24px] gap-2 w-full",
+
+    mainCenter:
+        "min-h-full m-4 my-2 rounded bg-neutral-800 grid place-items-center text-neutral-100",
 }
 
 export default styles

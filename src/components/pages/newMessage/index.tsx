@@ -11,12 +11,14 @@ import submitMessageRecipient from "./Form/utils/submitMessageRecipient"
 import MessageEditor from "@/pages/newMessage/Editor/MessageEditor"
 import FormFooter from "@/pages/newMessage/Form/FormFooter"
 import {
+    isCreated,
     isMessageOrDraftCreated,
     isMessageOrDraftInProcess,
     isMessageOrDraftThrowingError,
 } from "@/pages/newMessage/Form/utils/checkMutationStatuses"
 import FormSubjectInput from "@/pages/newMessage/Form/FormSubjectInput"
 import FormRecipientInput from "@/pages/newMessage/Form/FormRecipientInput"
+import Loader from "@/Loader"
 
 const MessageForm = () => {
     const router = useRouter()
@@ -32,10 +34,10 @@ const MessageForm = () => {
     const { draftStatus, createDraft } = useNewDraftMutation()
 
     useEffect(() => {
-        if (isMessageOrDraftCreated(messageStatus, draftStatus)) {
+        if (isCreated(messageStatus)) {
             router.push("/")
         }
-    }, [draftStatus, messageStatus, router])
+    }, [messageStatus, router])
 
     /** --------------------------------------------------------------
      * This part is important for preventing data loss on page leave
@@ -88,8 +90,7 @@ const MessageForm = () => {
     }
 
     if (isMessageOrDraftInProcess(messageStatus, draftStatus)) {
-        // todo - create Loading component
-        return <div>Loading...</div>
+        return <Loader />
     }
 
     if (isMessageOrDraftThrowingError(messageStatus, draftStatus)) {

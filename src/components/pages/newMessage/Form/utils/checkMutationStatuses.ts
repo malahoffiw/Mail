@@ -1,5 +1,7 @@
 type TRPCStatus = "success" | "loading" | "error" | "idle"
 
+export const isCreated = (status: TRPCStatus) => status === "success"
+
 export const isMessageOrDraftCreated = (
     messageStatus: TRPCStatus,
     draftStatus: TRPCStatus

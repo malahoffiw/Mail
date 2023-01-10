@@ -16,12 +16,14 @@ const MessageEditor = ({ editorRef }: MessageEditorProps) => {
             apiKey={env.NEXT_PUBLIC_TINYMCE_API_KEY}
             onInit={(evt, editor) => (editorRef.current = editor)}
             init={{
-                // todo - somethings wrong with width
-                // when mobile works fine, breaks when sidebar on the left side appears
-                // todo - try to use other ideas
-                // for example a custom tinymce sidebar with all required tools from toolbar (https://www.tiny.cloud/docs/tinymce/6/customsidebar/)
-                // or just inline toolbar only when windowWidth > 640px
                 ...initOptions,
+                mobile: {
+                    toolbar_mode: "sliding",
+                    toolbar:
+                        "fullscreen export undo redo | bold italic underline | backcolor forecolor | " +
+                        "fontsize | fontfamily | bullist numlist |" +
+                        "table image media",
+                },
             }}
         />
     )

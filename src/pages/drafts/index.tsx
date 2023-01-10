@@ -4,6 +4,7 @@ import useMessagesSelector from "../../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../../hooks/store/useMessagesInitialize"
 
 import Messages from "@/pages/messages"
+import Loader from "@/Loader"
 
 export { getServerSideProps } from "../index"
 
@@ -12,7 +13,7 @@ const Drafts: NextPage = () => {
     const { messages, status } = useMessagesSelector("drafts")
 
     if (status.pending) {
-        return <div>Loading...</div>
+        return <Loader />
     }
 
     if (status.error) {

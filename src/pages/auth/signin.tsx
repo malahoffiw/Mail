@@ -4,8 +4,6 @@ import { getProviders, signIn } from "next-auth/react"
 import { getServerAuthSession } from "../../server/common/get-server-auth-session"
 import styles from "../../styles"
 
-// todo - fix styles on this page (probably signup too)
-
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)
     if (session && session.user)

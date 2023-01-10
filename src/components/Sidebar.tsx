@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { motion } from "framer-motion"
 import { BiPencil, BiTrash } from "react-icons/bi"
 import { MdOutlineMailOutline } from "react-icons/md"
@@ -17,10 +18,10 @@ type SidebarProps = {
     setState: Dispatch<SetStateAction<"open" | "closed">>
 }
 
-// todo - disable and style (like when hovered) btn according to page (eg. disable "Drafts" btn when on drafts page)
-
 const Sidebar = ({ state, setState }: SidebarProps) => {
     const windowWidth = useWindowWidth()
+    const router = useRouter()
+    const currentPage = router.pathname
 
     const closeSidebar = () => {
         state === "open" && setState("closed")
@@ -58,7 +59,9 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/new"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconMain} ${styles.transition}`}
+                className={`${styles.sidebarIconMain} ${styles.transition} ${
+                    currentPage === "/new" && "pointer-events-none"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <BiPencil size={ICON_SIZE} />
@@ -73,7 +76,11 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+                className={`${styles.sidebarIconSecondary} ${
+                    styles.transition
+                } ${
+                    currentPage === "/" && "pointer-events-none brightness-150"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <MdOutlineMailOutline size={ICON_SIZE} />
@@ -88,7 +95,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/sent"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+                className={`${styles.sidebarIconSecondary} ${
+                    styles.transition
+                } ${
+                    currentPage === "/sent" &&
+                    "pointer-events-none brightness-150"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <TiArrowBackOutline size={ICON_SIZE} />
@@ -103,7 +115,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/drafts"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+                className={`${styles.sidebarIconSecondary} ${
+                    styles.transition
+                } ${
+                    currentPage === "/drafts" &&
+                    "pointer-events-none brightness-150"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <RiDraftLine size={ICON_SIZE} />
@@ -118,7 +135,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+                className={`${styles.sidebarIconSecondary} ${
+                    styles.transition
+                } ${
+                    currentPage === "/spam" &&
+                    "pointer-events-none brightness-150"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <RiSpam3Line size={ICON_SIZE} />
@@ -133,7 +155,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${styles.transition}`}
+                className={`${styles.sidebarIconSecondary} ${
+                    styles.transition
+                } ${
+                    currentPage === "/trash" &&
+                    "pointer-events-none brightness-150"
+                }`}
             >
                 <li className={styles.sidebarBtn}>
                     <BiTrash size={ICON_SIZE} />
