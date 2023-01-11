@@ -1,8 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { InboxMessage } from "../../types/message"
-import { client } from "../../utils/trpc"
 import type { MessagesStore } from "../../types/store"
+import { client } from "../../utils/trpc"
+import { handleDelete } from "../utils/deleteThunk"
+import { handleLoad } from "../utils/loadThunk"
 
 const initialState: MessagesStore<InboxMessage> = {
     messages: [],
@@ -19,20 +21,14 @@ export const inboxSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(loadInbox.pending, (state) => {
-            state.pending = true
-        })
         builder.addCase(
             loadInbox.fulfilled,
             (state, action: PayloadAction<InboxMessage[]>) => {
-                state.pending = false
                 state.messages = action.payload
             }
         )
-        builder.addCase(loadInbox.rejected, (state) => {
-            state.pending = false
-            state.error = true
-        })
+        handleDelete(builder)
+        handleLoad(builder, "inbox/")
     },
 })
 

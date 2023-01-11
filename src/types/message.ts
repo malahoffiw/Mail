@@ -18,5 +18,11 @@ export interface SentMessage extends Message {
 }
 
 export interface DraftMessage extends Message {
-    recipientId?: string
+    recipientId: string | null
+}
+
+export interface DeletedMessage extends Message {
+    recipientId: string | null
+    authorId?: string
+    read?: boolean
 }

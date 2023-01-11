@@ -12,9 +12,6 @@ export const modalSlice = createSlice({
         assignMessage: (state, action) => {
             state.messageId = action.payload
         },
-        dismissMessage: (state) => {
-            state.messageId = ""
-        },
         openModal: (state) => {
             state.isOpen = true
         },
@@ -24,7 +21,6 @@ export const modalSlice = createSlice({
     },
 })
 
-export const { assignMessage, dismissMessage, closeModal, openModal } =
-    modalSlice.actions
+export const { assignMessage, closeModal, openModal } = modalSlice.actions
 
 export default modalSlice.reducer

@@ -1,9 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { DraftMessage } from "../../types/message"
+import type { DeletedMessage, DraftMessage } from "../../types/message"
 import type { MessagesStore } from "../../types/store"
 import { client } from "../../utils/trpc"
-import { handleDelete } from "../utils/deleteThunk"
 import { handleLoad } from "../utils/loadThunk"
 
 const initialState: MessagesStore<DraftMessage> = {
@@ -12,25 +11,24 @@ const initialState: MessagesStore<DraftMessage> = {
     error: false,
 }
 
-export const loadDrafts = createAsyncThunk("drafts/loadDrafts", async () => {
-    return await client.messages.getDrafts.query()
+export const loadDeleted = createAsyncThunk("deleted/loadDeleted", async () => {
+    return await client.messages.getDeleted.query()
 })
 
-export const draftsSlice = createSlice({
-    name: "drafts",
+export const deletedSLice = createSlice({
+    name: "deleted",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(
-            loadDrafts.fulfilled,
-            (state, action: PayloadAction<DraftMessage[]>) => {
+            loadDeleted.fulfilled,
+            (state, action: PayloadAction<DeletedMessage[]>) => {
                 state.messages = action.payload
             }
         )
-        handleDelete(builder)
-        handleLoad(builder, "drafts/")
+        handleLoad(builder, "deleted/")
     },
 })
 
-export const {} = draftsSlice.actions
-export default draftsSlice.reducer
+export const {} = deletedSLice.actions
+export default deletedSLice.reducer

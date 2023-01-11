@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { router, protectedProcedure } from "../trpc"
 import type {
+    DeletedMessage,
     DraftMessage,
     InboxMessage,
     SentMessage,
@@ -87,8 +88,8 @@ export const messagesRouter = router({
                     starred: true,
                     replyToId: true,
                     files: true,
+                    recipientId: true,
                 },
-
                 orderBy: {
                     createdAt: "desc",
                 },
@@ -99,6 +100,46 @@ export const messagesRouter = router({
                     ...draft,
                     createdAt: draft.createdAt.toISOString(),
                     files: draft.files.map((file) => file.id),
+                }
+            })
+        }
+    ),
+    getDeleted: protectedProcedure.query(
+        async ({ ctx }): Promise<DeletedMessage[]> => {
+            const deleted = await ctx.prisma.message.findMany({
+                where: {
+                    OR: [
+                        {
+                            authorId: ctx.session.user.id,
+                        },
+                        {
+                            recipientId: ctx.session.user.id,
+                        },
+                    ],
+                    isDraft: true,
+                },
+                select: {
+                    id: true,
+                    subject: true,
+                    body: true,
+                    createdAt: true,
+                    starred: true,
+                    replyToId: true,
+                    files: true,
+                    recipientId: true,
+                    authorId: true,
+                    read: true,
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            })
+
+            return deleted.map((message) => {
+                return {
+                    ...message,
+                    createdAt: message.createdAt.toISOString(),
+                    files: message.files.map((file) => file.id),
                 }
             })
         }
@@ -177,6 +218,18 @@ export const messagesRouter = router({
                         connect: [].map((fileId) => ({ id: fileId })), // [] -> input.files
                     },
                     replyToId: input.replyToId,
+                },
+            })
+        }),
+    setDeleted: protectedProcedure
+        .input(z.string())
+        .mutation(({ ctx, input }) => {
+            return ctx.prisma.message.update({
+                where: {
+                    id: input,
+                },
+                data: {
+                    deleted: true,
                 },
             })
         }),
