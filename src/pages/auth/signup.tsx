@@ -6,6 +6,8 @@ import { trpc } from "../../utils/trpc"
 
 import SignupForm from "@/auth/signupForm"
 
+export const nameAllowed = new RegExp(/^[a-zA-Z\d_-]{1,30}$/)
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)
     if (!session || !session.user)
@@ -16,7 +18,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             },
         }
 
-    if (session && session.user && session.user.name)
+    if (
+        session &&
+        session.user &&
+        session.user.name &&
+        nameAllowed.test(session.user.name)
+    )
         return {
             redirect: {
                 destination: "/",

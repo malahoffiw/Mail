@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { router, protectedProcedure } from "../trpc"
 import type {
-    DeletedMessage,
+    TrashMessage,
     DraftMessage,
     InboxMessage,
     SentMessage,
@@ -14,6 +14,7 @@ export const messagesRouter = router({
                 where: {
                     recipientId: ctx.session.user.id,
                     isDraft: false,
+                    deleted: false,
                 },
                 select: {
                     id: true,
@@ -47,6 +48,7 @@ export const messagesRouter = router({
                 where: {
                     authorId: ctx.session.user.id,
                     isDraft: false,
+                    deleted: false,
                 },
                 select: {
                     id: true,
@@ -79,6 +81,7 @@ export const messagesRouter = router({
                 where: {
                     authorId: ctx.session.user.id,
                     isDraft: true,
+                    deleted: false,
                 },
                 select: {
                     id: true,
@@ -91,7 +94,7 @@ export const messagesRouter = router({
                     recipientId: true,
                 },
                 orderBy: {
-                    createdAt: "desc",
+                    updatedAt: "desc",
                 },
             })
 
@@ -105,7 +108,7 @@ export const messagesRouter = router({
         }
     ),
     getDeleted: protectedProcedure.query(
-        async ({ ctx }): Promise<DeletedMessage[]> => {
+        async ({ ctx }): Promise<TrashMessage[]> => {
             const deleted = await ctx.prisma.message.findMany({
                 where: {
                     OR: [
@@ -116,7 +119,7 @@ export const messagesRouter = router({
                             recipientId: ctx.session.user.id,
                         },
                     ],
-                    isDraft: true,
+                    deleted: true,
                 },
                 select: {
                     id: true,
@@ -131,7 +134,7 @@ export const messagesRouter = router({
                     read: true,
                 },
                 orderBy: {
-                    createdAt: "desc",
+                    updatedAt: "desc",
                 },
             })
 
@@ -154,8 +157,8 @@ export const messagesRouter = router({
                 replyToId: z.string().optional(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            return ctx.prisma.message.create({
+        .mutation(async ({ ctx, input }) => {
+            return await ctx.prisma.message.create({
                 data: {
                     subject: input.subject,
                     body: input.body,
@@ -179,8 +182,8 @@ export const messagesRouter = router({
                 replyToId: z.string().optional(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            return ctx.prisma.message.create({
+        .mutation(async ({ ctx, input }) => {
+            return await ctx.prisma.message.create({
                 data: {
                     subject: input.subject,
                     body: input.body,
@@ -205,8 +208,8 @@ export const messagesRouter = router({
                 replyToId: z.string().optional(),
             })
         )
-        .mutation(({ ctx, input }) => {
-            return ctx.prisma.message.update({
+        .mutation(async ({ ctx, input }) => {
+            return await ctx.prisma.message.update({
                 where: {
                     id: input.id,
                 },
@@ -223,15 +226,20 @@ export const messagesRouter = router({
         }),
     setDeleted: protectedProcedure
         .input(z.string())
-        .mutation(({ ctx, input }) => {
-            return ctx.prisma.message.update({
+        .mutation(async ({ ctx, input }) => {
+            const message = await ctx.prisma.message.update({
                 where: {
                     id: input,
                 },
                 data: {
                     deleted: true,
                 },
+                select: {
+                    id: true,
+                },
             })
+
+            return message.id
         }),
     deleteMessage: protectedProcedure
         .input(z.string())

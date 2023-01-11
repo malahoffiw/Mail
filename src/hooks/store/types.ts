@@ -1,1 +1,1 @@
-export type MessageType = "inbox" | "drafts" | "sent"
+export type MessageType = "inbox" | "drafts" | "sent" | "trash"

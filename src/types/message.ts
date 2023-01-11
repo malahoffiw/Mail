@@ -21,7 +21,7 @@ export interface DraftMessage extends Message {
     recipientId: string | null
 }
 
-export interface DeletedMessage extends Message {
+export interface TrashMessage extends Message {
     recipientId: string | null
     authorId?: string
     read?: boolean

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit"
 import inboxReducer from "./reducers/inbox"
 import sentReducer from "./reducers/sent"
 import draftsReducer from "./reducers/drafts"
+import trashReducer from "./reducers/trash"
 import modalReducer from "./reducers/modal"
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
         inbox: inboxReducer,
         sent: sentReducer,
         drafts: draftsReducer,
+        trash: trashReducer,
         modal: modalReducer,
     },
 })

@@ -1,34 +1,34 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { DeletedMessage, DraftMessage } from "../../types/message"
+import type { TrashMessage } from "../../types/message"
 import type { MessagesStore } from "../../types/store"
 import { client } from "../../utils/trpc"
 import { handleLoad } from "../utils/loadThunk"
 
-const initialState: MessagesStore<DraftMessage> = {
+const initialState: MessagesStore<TrashMessage> = {
     messages: [],
     pending: false,
     error: false,
 }
 
-export const loadDeleted = createAsyncThunk("deleted/loadDeleted", async () => {
+export const loadTrash = createAsyncThunk("trash/loadTrash", async () => {
     return await client.messages.getDeleted.query()
 })
 
-export const deletedSLice = createSlice({
-    name: "deleted",
+export const trashSLice = createSlice({
+    name: "trash",
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(
-            loadDeleted.fulfilled,
-            (state, action: PayloadAction<DeletedMessage[]>) => {
+            loadTrash.fulfilled,
+            (state, action: PayloadAction<TrashMessage[]>) => {
                 state.messages = action.payload
             }
         )
-        handleLoad(builder, "deleted/")
+        handleLoad(builder, "trash/")
     },
 })
 
-export const {} = deletedSLice.actions
-export default deletedSLice.reducer
+export const {} = trashSLice.actions
+export default trashSLice.reducer

@@ -6,6 +6,7 @@ import useMessagesInitialize from "../hooks/store/useMessagesInitialize"
 
 import Messages from "@/pages/messages"
 import Loader from "@/Loader"
+import { nameAllowed } from "./auth/signup"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)
@@ -17,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             },
         }
 
-    if (!session.user.name) {
+    if (!session.user.name || !nameAllowed.test(session.user.name)) {
         return {
             redirect: {
                 destination: "/auth/signup",

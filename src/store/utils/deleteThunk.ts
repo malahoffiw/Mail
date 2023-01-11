@@ -9,8 +9,8 @@ import type {
 import { client } from "../../utils/trpc"
 import { handleLoad } from "./loadThunk"
 
-export const deleteMessage = createAsyncThunk(
-    "any/deleteMessage",
+export const addToTrash = createAsyncThunk(
+    "any/addToTrash",
     async (id: string) => {
         return await client.messages.setDeleted.mutate(id)
     }
@@ -21,9 +21,9 @@ export const handleDelete = (
         MessagesStore<InboxMessage | SentMessage | DraftMessage>
     >
 ) => {
-    builder.addCase(deleteMessage.fulfilled, (state, action) => {
+    builder.addCase(addToTrash.fulfilled, (state, action) => {
         state.messages = state.messages.filter(
-            (message) => message.id !== action.payload.id
+            (message) => message.id !== action.payload
         )
     })
     handleLoad(builder, "any/")

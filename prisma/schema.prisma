@@ -20,6 +20,7 @@ model File {
 model Message {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   subject     String
   body        String
   author      User      @relation(name: "author", fields: [authorId], references: [id])

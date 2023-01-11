@@ -1,5 +1,6 @@
 import React from "react"
 import { BiUserCircle } from "react-icons/bi"
+import { TbTrash } from "react-icons/tb"
 import dayjs from "dayjs"
 import sanitizeHtml from "sanitize-html"
 import type {
@@ -9,6 +10,7 @@ import type {
 } from "../../../types/message"
 import { useAppDispatch } from "../../../hooks/redux"
 import { assignMessage, openModal } from "../../../store/reducers/modal"
+import { addToTrash } from "../../../store/utils/deleteThunk"
 import styles from "../../../styles"
 
 type MessageListProps = {
@@ -30,6 +32,10 @@ const MessageList = ({ messages }: MessageListProps) => {
         dispatch(openModal())
     }
 
+    const deleteMessage = (id: string) => {
+        dispatch(addToTrash(id))
+    }
+
     return (
         <>
             {messages.map((message) => (
@@ -38,7 +44,7 @@ const MessageList = ({ messages }: MessageListProps) => {
                         openMessageModal(message.id)
                     }}
                     key={message.id}
-                    className={`${styles.transition} ${styles.messageLine} grid grid-cols-[32px_minmax(140px,_1fr)_48px] gap-1 bg-neutral-800`}
+                    className={`${styles.transition} ${styles.messageLine}`}
                 >
                     <BiUserCircle size={32} />
                     <div className="relative w-full">
@@ -47,10 +53,18 @@ const MessageList = ({ messages }: MessageListProps) => {
                             {sanitize(message.body)}
                         </p>
                     </div>
-                    <div className="justify-self-end">
+                    <div className="justify-self-end flex flex-col justify-between items-end">
                         <p className="text-sm text-neutral-600">
                             {dayjs(message.createdAt).format("DD/MM")}
                         </p>
+                        <TbTrash
+                            size={16}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                deleteMessage(message.id)
+                            }}
+                            className="opacity-0 group-hover:opacity-100 text-neutral-600 hover:text-neutral-100 cursor-pointer"
+                        />
                     </div>
                 </li>
             ))}

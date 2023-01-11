@@ -1,9 +1,10 @@
-import { useAppDispatch } from "../redux"
 import { useEffect } from "react"
+import { useAppDispatch } from "../redux"
 import { loadInbox } from "../../store/reducers/inbox"
-import type { MessageType } from "./types"
 import { loadDrafts } from "../../store/reducers/drafts"
 import { loadSent } from "../../store/reducers/sent"
+import { loadTrash } from "../../store/reducers/trash"
+import type { MessageType } from "./types"
 
 const useMessagesInitialize = (type: MessageType) => {
     const dispatch = useAppDispatch()
@@ -17,6 +18,9 @@ const useMessagesInitialize = (type: MessageType) => {
                 break
             case "sent":
                 dispatch(loadSent())
+                break
+            case "trash":
+                dispatch(loadTrash())
                 break
             default:
                 break

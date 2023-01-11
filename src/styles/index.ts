@@ -4,7 +4,8 @@ const styles = {
     btnLarge: "p-6 py-2 rounded cursor-pointer hover:brightness-75",
     btnSmall: "p-4 py-1 rounded cursor-pointer hover:brightness-75",
 
-    messageLine: "p-1 rounded cursor-pointer hover:brightness-125",
+    messageLine:
+        "group grid grid-cols-[32px_minmax(140px,_1fr)_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125",
 
     sidebarIconSecondary:
         "w-full h-10 p-2 cursor-pointer rounded " +
@@ -20,7 +21,7 @@ const styles = {
     sidebarBtn: "grid grid-cols-[24px_1fr_24px] gap-2 w-full",
 
     mainCenter:
-        "min-h-full m-4 my-2 rounded bg-neutral-800 grid place-items-center text-neutral-100",
+        "min-h-max m-4 my-2 rounded bg-neutral-800 grid place-items-center text-neutral-100",
 }
 
 export default styles

@@ -4,16 +4,23 @@ import { motion } from "framer-motion"
 import dayjs from "dayjs"
 import parse from "html-react-parser"
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux"
-import type { InboxMessage, SentMessage } from "../../../types/message"
+import type {
+    InboxMessage,
+    SentMessage,
+    TrashMessage,
+} from "../../../types/message"
 import Loader from "@/Loader"
 import { ICON_SIZE } from "@/Sidebar"
 import { IoArrowBack } from "react-icons/io5"
 import { closeModal } from "../../../store/reducers/modal"
+import { addToTrash } from "../../../store/utils/deleteThunk"
+import { TbTrash } from "react-icons/tb"
 
 const getCurrentPage = (router: NextRouter) => {
     const currentPage = router.pathname
     if (currentPage === "/") return "inbox"
-    return "sent"
+    if (currentPage === "/sent") return "sent"
+    return "trash"
 }
 
 const animationVariants = {
@@ -34,13 +41,17 @@ const MessageModal = () => {
         dispatch(closeModal())
     }
 
+    const deleteMessage = (id: string) => {
+        dispatch(addToTrash(id))
+        closeMessageModal()
+    }
+
     const router = useRouter()
     const currentPage = getCurrentPage(router)
 
     const messageId = useAppSelector((state) => state.modal.messageId)
-    const messages: (InboxMessage | SentMessage)[] = useAppSelector(
-        (state) => state[currentPage].messages
-    )
+    const messages: (InboxMessage | SentMessage | TrashMessage)[] =
+        useAppSelector((state) => state[currentPage].messages)
     const message = messages.find((message) => message.id === messageId)
 
     return (
@@ -51,11 +62,16 @@ const MessageModal = () => {
                 "absolute z-10 top-0 left-0 opacity-0 origin-bottom h-full w-full rounded bg-neutral-800 text-neutral-100"
             }
         >
-            <div className="px-2 w-full flex items-center bg-green h-10">
+            <div className="px-4 w-full flex items-center justify-between bg-green h-10">
                 <IoArrowBack
                     className="cursor-pointer"
                     size={ICON_SIZE}
                     onClick={closeMessageModal}
+                />
+                <TbTrash
+                    size={ICON_SIZE}
+                    className="cursor-pointer"
+                    onClick={() => deleteMessage(messageId)}
                 />
             </div>
             {!message ? (

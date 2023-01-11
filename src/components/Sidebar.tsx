@@ -3,9 +3,10 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { motion } from "framer-motion"
-import { BiPencil, BiTrash } from "react-icons/bi"
+import { BiPencil } from "react-icons/bi"
 import { MdOutlineMailOutline } from "react-icons/md"
 import { RiSpam3Line, RiDraftLine } from "react-icons/ri"
+import { TbTrash } from "react-icons/tb"
 import { TiArrowBackOutline } from "react-icons/ti"
 import { FiChevronRight } from "react-icons/fi"
 import useWindowWidth from "../hooks/utils/useWindowWidth"
@@ -158,7 +159,7 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                 </li>
             </Link>
             <Link
-                href={"/"}
+                href={"/trash"}
                 onClick={closeSidebar}
                 className={`${styles.sidebarIconSecondary} ${
                     styles.transition
@@ -168,7 +169,7 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                 }`}
             >
                 <li className={styles.sidebarBtn}>
-                    <BiTrash size={ICON_SIZE} />
+                    <TbTrash size={ICON_SIZE} />
                     {state === "open" && (
                         <>
                             <p>Trash</p>
