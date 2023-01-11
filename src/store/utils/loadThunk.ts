@@ -1,10 +1,5 @@
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit"
 import type { MessagesStore } from "../../types/store"
-import type {
-    DraftMessage,
-    InboxMessage,
-    SentMessage,
-} from "../../types/message"
 import {
     isFulfilledAction,
     isPendingAction,
@@ -12,9 +7,7 @@ import {
 } from "./helpersAsync"
 
 export const handleLoad = (
-    builder: ActionReducerMapBuilder<
-        MessagesStore<InboxMessage | SentMessage | DraftMessage>
-    >,
+    builder: ActionReducerMapBuilder<MessagesStore>,
     prefix: string
 ) => {
     builder

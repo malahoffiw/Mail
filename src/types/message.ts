@@ -1,28 +1,16 @@
+import type { User } from "next-auth"
+
 export interface Message {
     id: string
+    authorId: string
+    author: User
+    recipientId: string | null
+    recipient: User | null
+    read: boolean
     subject: string
     body: string
     replyToId: string | null
     files?: string[] // File[]
     createdAt: string
     starred: boolean
-}
-
-export interface InboxMessage extends Message {
-    authorId: string
-    read: boolean
-}
-
-export interface SentMessage extends Message {
-    recipientId: string
-}
-
-export interface DraftMessage extends Message {
-    recipientId: string | null
-}
-
-export interface TrashMessage extends Message {
-    recipientId: string | null
-    authorId?: string
-    read?: boolean
 }

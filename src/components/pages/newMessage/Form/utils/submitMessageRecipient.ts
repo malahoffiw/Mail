@@ -12,7 +12,7 @@ const getUser = async (name: string) => {
     if (name.length === 0) {
         return null
     }
-    return await client.users.getUser.query(name)
+    return await client.users.getUserByName.query(name)
 }
 
 const submitMessageRecipient = async (

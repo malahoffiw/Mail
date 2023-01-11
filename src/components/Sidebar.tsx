@@ -15,6 +15,7 @@ import { useAppDispatch } from "../hooks/redux"
 import { closeModal } from "../store/reducers/modal"
 
 export const ICON_SIZE = 24
+export const ICON_SIZE_LARGE = 32
 
 type SidebarProps = {
     state: "open" | "closed"

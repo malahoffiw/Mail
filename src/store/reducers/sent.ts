@@ -1,12 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { SentMessage } from "../../types/message"
+import type { Message } from "../../types/message"
 import type { MessagesStore } from "../../types/store"
 import { client } from "../../utils/trpc"
 import { handleDelete } from "../utils/deleteThunk"
 import { handleLoad } from "../utils/loadThunk"
 
-const initialState: MessagesStore<SentMessage> = {
+const initialState: MessagesStore = {
     messages: [],
     pending: false,
     error: false,
@@ -23,7 +23,7 @@ export const sentSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             loadSent.fulfilled,
-            (state, action: PayloadAction<SentMessage[]>) => {
+            (state, action: PayloadAction<Message[]>) => {
                 state.messages = action.payload
             }
         )

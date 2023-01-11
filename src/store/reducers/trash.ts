@@ -1,18 +1,18 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { TrashMessage } from "../../types/message"
+import type { Message } from "../../types/message"
 import type { MessagesStore } from "../../types/store"
 import { client } from "../../utils/trpc"
 import { handleLoad } from "../utils/loadThunk"
 
-const initialState: MessagesStore<TrashMessage> = {
+const initialState: MessagesStore = {
     messages: [],
     pending: false,
     error: false,
 }
 
 export const loadTrash = createAsyncThunk("trash/loadTrash", async () => {
-    return await client.messages.getDeleted.query()
+    return await client.messages.getTrash.query()
 })
 
 export const trashSLice = createSlice({
@@ -22,7 +22,7 @@ export const trashSLice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             loadTrash.fulfilled,
-            (state, action: PayloadAction<TrashMessage[]>) => {
+            (state, action: PayloadAction<Message[]>) => {
                 state.messages = action.payload
             }
         )

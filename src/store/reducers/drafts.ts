@@ -1,12 +1,12 @@
 import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import type { DraftMessage } from "../../types/message"
+import type { Message } from "../../types/message"
 import type { MessagesStore } from "../../types/store"
 import { client } from "../../utils/trpc"
 import { handleDelete } from "../utils/deleteThunk"
 import { handleLoad } from "../utils/loadThunk"
 
-const initialState: MessagesStore<DraftMessage> = {
+const initialState: MessagesStore = {
     messages: [],
     pending: false,
     error: false,
@@ -23,7 +23,7 @@ export const draftsSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(
             loadDrafts.fulfilled,
-            (state, action: PayloadAction<DraftMessage[]>) => {
+            (state, action: PayloadAction<Message[]>) => {
                 state.messages = action.payload
             }
         )

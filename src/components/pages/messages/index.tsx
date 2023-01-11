@@ -1,19 +1,25 @@
 import React from "react"
-import type {
-    DraftMessage,
-    InboxMessage,
-    SentMessage,
-} from "../../../types/message"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 import styles from "../../../styles"
+import type { Message } from "../../../types/message"
 
 import MessageList from "@/pages/messages/MessageList"
 import MessageModal from "@/pages/messages/MessageModal"
+import getCurrentPage from "@/pages/utils/getCurrentPage"
+import Loader from "@/Loader"
 
 type MessagesProps = {
-    messages: (InboxMessage | SentMessage | DraftMessage)[]
+    messages: Message[]
 }
 
 const Messages = ({ messages }: MessagesProps) => {
+    const router = useRouter()
+    const currentPage = getCurrentPage(router)
+
+    const { data: session } = useSession()
+    if (!session || !session.user) return <Loader />
+
     if (messages.length === 0) {
         return (
             <main className={styles.mainCenter}>
@@ -24,11 +30,15 @@ const Messages = ({ messages }: MessagesProps) => {
 
     // todo - autoAnimate on deleting
     return (
-        <main className="relative min-h-max text-neutral-100 bg-neutral-800 p-2 m-4 my-2 rounded overflow-auto">
+        <main className="relative min-h-max text-neutral-100 bg-neutral-800 p-2 m-4 my-2 rounded overflow-y-auto overflow-x-hidden">
             <ul className="rounded flex flex-col gap-1">
-                <MessageList messages={messages} />
+                <MessageList
+                    messages={messages}
+                    user={session.user}
+                    currentPage={currentPage}
+                />
             </ul>
-            <MessageModal />
+            <MessageModal user={session.user} currentPage={currentPage} />
         </main>
     )
 }

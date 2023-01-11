@@ -8,6 +8,21 @@ import Messages from "@/pages/messages"
 import Loader from "@/Loader"
 import { nameAllowed } from "./auth/signup"
 
+const Inbox: NextPage = () => {
+    useMessagesInitialize("inbox")
+    const { messages, status } = useMessagesSelector("inbox")
+
+    if (status.pending) {
+        return <Loader />
+    }
+
+    if (status.error) {
+        return <Error statusCode={400} withDarkMode={true} />
+    }
+
+    return <Messages messages={messages} />
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getServerAuthSession(ctx)
     if (!session || !session.user)
@@ -30,21 +45,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return {
         props: {},
     }
-}
-
-const Inbox: NextPage = () => {
-    useMessagesInitialize("inbox")
-    const { messages, status } = useMessagesSelector("inbox")
-
-    if (status.pending) {
-        return <Loader />
-    }
-
-    if (status.error) {
-        return <Error statusCode={400} withDarkMode={true} />
-    }
-
-    return <Messages messages={messages} />
 }
 
 export default Inbox

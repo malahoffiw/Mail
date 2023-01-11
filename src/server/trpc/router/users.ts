@@ -11,12 +11,21 @@ export const usersRouter = router({
 
         return users.map((user) => user.name)
     }),
-    getUser: protectedProcedure
+    getUserByName: protectedProcedure
         .input(z.string())
         .query(async ({ ctx, input }) => {
             return await ctx.prisma.user.findUnique({
                 where: {
                     name: input,
+                },
+            })
+        }),
+    getUserById: protectedProcedure
+        .input(z.string())
+        .query(async ({ ctx, input }) => {
+            return await ctx.prisma.user.findUnique({
+                where: {
+                    id: input,
                 },
             })
         }),

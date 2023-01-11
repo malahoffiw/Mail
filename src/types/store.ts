@@ -1,14 +1,7 @@
-import type {
-    DraftMessage,
-    InboxMessage,
-    SentMessage,
-    TrashMessage,
-} from "./message"
+import type { Message } from "./message"
 
-export interface MessagesStore<
-    T extends InboxMessage | DraftMessage | SentMessage | TrashMessage
-> {
-    messages: T[]
+export interface MessagesStore {
+    messages: Message[]
     pending: boolean
     error: boolean
 }

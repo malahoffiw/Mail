@@ -5,7 +5,7 @@ const styles = {
     btnSmall: "p-4 py-1 rounded cursor-pointer hover:brightness-75",
 
     messageLine:
-        "group grid grid-cols-[32px_minmax(140px,_1fr)_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125",
+        "group grid grid-cols-[40px_minmax(140px,_1fr)_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125",
 
     sidebarIconSecondary:
         "w-full h-10 p-2 cursor-pointer rounded " +

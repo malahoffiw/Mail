@@ -1,20 +1,23 @@
 import React from "react"
-import { BiUserCircle } from "react-icons/bi"
+import Image from "next/image"
+import type { User } from "next-auth"
+import { HiOutlineUserCircle } from "react-icons/hi2"
 import { TbTrash } from "react-icons/tb"
 import dayjs from "dayjs"
 import sanitizeHtml from "sanitize-html"
-import type {
-    DraftMessage,
-    InboxMessage,
-    SentMessage,
-} from "../../../types/message"
-import { useAppDispatch } from "../../../hooks/redux"
-import { assignMessage, openModal } from "../../../store/reducers/modal"
-import { addToTrash } from "../../../store/utils/deleteThunk"
-import styles from "../../../styles"
+import { useAppDispatch } from "../../../../hooks/redux"
+import type { MessageType } from "../../../../hooks/store/types"
+import { assignMessage, openModal } from "../../../../store/reducers/modal"
+import { addToTrash } from "../../../../store/utils/deleteThunk"
+import type { Message } from "../../../../types/message"
+import styles from "../../../../styles"
+
+import { ICON_SIZE_LARGE } from "@/Sidebar"
 
 type MessageListProps = {
-    messages: (InboxMessage | SentMessage | DraftMessage)[]
+    messages: Message[]
+    user: User
+    currentPage: MessageType
 }
 
 const sanitize = (html: string) => {
@@ -24,7 +27,7 @@ const sanitize = (html: string) => {
     })
 }
 
-const MessageList = ({ messages }: MessageListProps) => {
+const MessageList = ({ messages, user, currentPage }: MessageListProps) => {
     const dispatch = useAppDispatch()
 
     const openMessageModal = (id: string) => {
@@ -34,6 +37,36 @@ const MessageList = ({ messages }: MessageListProps) => {
 
     const deleteMessage = (id: string) => {
         dispatch(addToTrash(id))
+    }
+
+    const getMessageImagePath = (message: Message) => {
+        if (currentPage === "inbox") return message.author.image
+        if (currentPage === "drafts" && message.recipient)
+            return message.recipient.image
+        if (currentPage === "sent" && message.recipient)
+            return message.recipient.image
+
+        // trash
+        if (message.authorId === user.id && message.recipientId === user.id)
+            return message.author.image
+        if (message.recipientId === user.id) return message.author.image
+        return message.recipient?.image
+    }
+
+    const getMessageImage = (message: Message) => {
+        const path = getMessageImagePath(message)
+
+        if (!path) return <HiOutlineUserCircle size={ICON_SIZE_LARGE} />
+
+        return (
+            <Image
+                src={path}
+                alt="user image"
+                width={ICON_SIZE_LARGE}
+                height={ICON_SIZE_LARGE}
+                className="rounded-full border-neutral-100 border-2"
+            />
+        )
     }
 
     return (
@@ -46,10 +79,10 @@ const MessageList = ({ messages }: MessageListProps) => {
                     key={message.id}
                     className={`${styles.transition} ${styles.messageLine}`}
                 >
-                    <BiUserCircle size={32} />
+                    <div>{getMessageImage(message)}</div>
                     <div className="relative w-full">
                         <p>{message.subject}</p>
-                        <p className="text-sm text-neutral-600">
+                        <p className="text-sm text-neutral-600 break-words">
                             {sanitize(message.body)}
                         </p>
                     </div>
