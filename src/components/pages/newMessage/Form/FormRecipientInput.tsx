@@ -13,8 +13,8 @@ const FormRecipientInput = ({
     setRecipient,
 }: FormRecipientInputProps) => {
     return (
-        <label className="text-neutral-600 bg-neutral-100 pl-4 rounded grid grid-cols-[35px_1fr] items-center gap-2">
-            Кому
+        <label className="text-neutral-600 bg-neutral-100 pl-4 rounded grid grid-cols-[40px_1fr] items-center gap-2">
+            To
             <input
                 className={`${
                     recipient.exists ? "text-green italic" : "text-neutral-900"

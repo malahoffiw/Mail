@@ -10,6 +10,8 @@ import { TiArrowBackOutline } from "react-icons/ti"
 import { FiChevronRight } from "react-icons/fi"
 import useWindowWidth from "../hooks/utils/useWindowWidth"
 import styles from "../styles"
+import { useAppDispatch } from "../hooks/redux"
+import { closeModal } from "../store/reducers/modal"
 
 export const ICON_SIZE = 24
 
@@ -40,8 +42,11 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
     const router = useRouter()
     const currentPage = router.pathname
 
+    const dispatch = useAppDispatch()
+
     const closeSidebar = () => {
         state === "open" && setState("closed")
+        dispatch(closeModal())
     }
 
     return (

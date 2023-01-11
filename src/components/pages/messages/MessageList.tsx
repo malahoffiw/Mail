@@ -1,6 +1,7 @@
 import React from "react"
 import { BiUserCircle } from "react-icons/bi"
 import dayjs from "dayjs"
+import sanitizeHtml from "sanitize-html"
 import type {
     DraftMessage,
     InboxMessage,
@@ -12,6 +13,13 @@ import styles from "../../../styles"
 
 type MessageListProps = {
     messages: (InboxMessage | SentMessage | DraftMessage)[]
+}
+
+const sanitize = (html: string) => {
+    return sanitizeHtml(html, {
+        allowedTags: [],
+        allowedAttributes: {},
+    })
 }
 
 const MessageList = ({ messages }: MessageListProps) => {
@@ -36,7 +44,7 @@ const MessageList = ({ messages }: MessageListProps) => {
                     <div className="relative w-full">
                         <p>{message.subject}</p>
                         <p className="text-sm text-neutral-600">
-                            {message.body}
+                            {sanitize(message.body)}
                         </p>
                     </div>
                     <div className="justify-self-end">
