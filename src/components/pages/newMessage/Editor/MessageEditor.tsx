@@ -8,13 +8,15 @@ import initOptions from "@/pages/newMessage/Editor/initOptions"
 
 type MessageEditorProps = {
     editorRef: React.MutableRefObject<Editor | null>
+    initialContent: string | null
 }
 
-const MessageEditor = ({ editorRef }: MessageEditorProps) => {
+const MessageEditor = ({ editorRef, initialContent }: MessageEditorProps) => {
     return (
         <TinyMCEEditor
             apiKey={env.NEXT_PUBLIC_TINYMCE_API_KEY}
             onInit={(evt, editor) => (editorRef.current = editor)}
+            initialValue={initialContent ?? ""}
             init={{
                 ...initOptions,
                 mobile: {

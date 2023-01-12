@@ -28,7 +28,6 @@ const Messages = ({ messages }: MessagesProps) => {
         )
     }
 
-    // todo - autoAnimate on deleting
     return (
         <main className="relative min-h-max text-neutral-100 bg-neutral-800 p-2 m-4 my-2 rounded overflow-y-auto overflow-x-hidden">
             <ul className="rounded flex flex-col gap-1">

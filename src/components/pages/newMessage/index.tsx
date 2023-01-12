@@ -4,7 +4,8 @@ import Error from "next/error"
 import type { Editor } from "tinymce"
 import useBeforePageLeave from "../../../hooks/router/useBeforePageLeave"
 import useNewMessageMutation from "../../../hooks/mutations/useNewMessageMutation"
-import useNewDraftMutation from "../../../hooks/mutations/useNewDraftMutation"
+import useDraftMutation from "../../../hooks/mutations/useDraftMutation"
+import useMessageFormInitialize from "../../../hooks/store/useMessageFormInitialize"
 
 import type { Recipient } from "./Form/utils/submitMessageRecipient"
 import submitMessageRecipient from "./Form/utils/submitMessageRecipient"
@@ -12,7 +13,6 @@ import MessageEditor from "@/pages/newMessage/Editor/MessageEditor"
 import FormFooter from "@/pages/newMessage/Form/FormFooter"
 import {
     isCreated,
-    isMessageOrDraftCreated,
     isMessageOrDraftInProcess,
     isMessageOrDraftThrowingError,
 } from "@/pages/newMessage/Form/utils/checkMutationStatuses"
@@ -22,22 +22,23 @@ import Loader from "@/Loader"
 
 const MessageForm = () => {
     const router = useRouter()
-    const editorRef = useRef<Editor | null>(null)
-    const [subject, setSubject] = useState("")
-    const [recipient, setRecipient] = useState<Recipient>({
-        name: "",
-        id: "",
-        exists: false,
-    })
+    const initialFormContent = useMessageFormInitialize()
 
-    const { messageStatus, createMessage } = useNewMessageMutation()
-    const { draftStatus, createDraft } = useNewDraftMutation()
+    const editorRef = useRef<Editor | null>(null)
+    const [subject, setSubject] = useState(initialFormContent.subject)
+    const [recipient, setRecipient] = useState<Recipient>(
+        initialFormContent.recipient
+    )
+
+    const { updateDraftIntoNewMessage, createMessage, getMessageStatus } =
+        useNewMessageMutation()
+    const { createDraft, updateDraft, getDraftStatus } = useDraftMutation()
 
     useEffect(() => {
-        if (isCreated(messageStatus)) {
+        if (isCreated(getMessageStatus())) {
             router.push("/")
         }
-    }, [messageStatus, router])
+    }, [getMessageStatus, router])
 
     /** --------------------------------------------------------------
      * This part is important for preventing data loss on page leave
@@ -51,23 +52,35 @@ const MessageForm = () => {
     }, [recipient.exists, subject.length])
 
     const handleWindowCloseOrBrowseAway = useCallback(async () => {
-        if (isMessageOrDraftCreated(messageStatus, draftStatus)) return
+        if (isCreated(getMessageStatus())) {
+            return
+        }
         if (!isFormEmpty()) {
             await submitMessageRecipient(recipient, setRecipient)
-            await createDraft(
-                recipient.id,
-                subject,
-                editorRef.current?.getContent() || ""
-            )
+            if (initialFormContent.draftId) {
+                await updateDraft(
+                    initialFormContent.draftId,
+                    recipient.id,
+                    subject,
+                    editorRef.current?.getContent() ?? ""
+                )
+            } else {
+                await createDraft(
+                    recipient.id,
+                    subject,
+                    editorRef.current?.getContent() || ""
+                )
+            }
         }
         return
     }, [
-        messageStatus,
-        draftStatus,
+        getMessageStatus,
         isFormEmpty,
         recipient,
-        createDraft,
+        initialFormContent.draftId,
+        updateDraft,
         subject,
+        createDraft,
     ])
 
     useBeforePageLeave(handleWindowCloseOrBrowseAway)
@@ -78,22 +91,31 @@ const MessageForm = () => {
         await submitMessageRecipient(recipient, setRecipient)
 
         if (recipient.exists) {
-            await createMessage(
-                recipient.id,
-                subject,
-                editorRef.current?.getContent() || ""
-            )
+            if (initialFormContent.draftId) {
+                await updateDraftIntoNewMessage(
+                    initialFormContent.draftId,
+                    recipient.id,
+                    subject,
+                    editorRef.current?.getContent() || ""
+                )
+            } else {
+                await createMessage(
+                    recipient.id,
+                    subject,
+                    editorRef.current?.getContent() || ""
+                )
+            }
         } else {
             // todo - handle this beautifully
             console.warn("recipient does not exist")
         }
     }
 
-    if (isMessageOrDraftInProcess(messageStatus, draftStatus)) {
+    if (isMessageOrDraftInProcess(getMessageStatus(), getDraftStatus())) {
         return <Loader />
     }
 
-    if (isMessageOrDraftThrowingError(messageStatus, draftStatus)) {
+    if (isMessageOrDraftThrowingError(getMessageStatus(), getDraftStatus())) {
         return <Error statusCode={500} />
     }
 
@@ -112,7 +134,10 @@ const MessageForm = () => {
                 setRecipient={setRecipient}
             />
             <FormSubjectInput subject={subject} setSubject={setSubject} />
-            <MessageEditor editorRef={editorRef} />
+            <MessageEditor
+                editorRef={editorRef}
+                initialContent={initialFormContent.body}
+            />
             <FormFooter />
         </form>
     )

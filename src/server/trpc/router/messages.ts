@@ -1,6 +1,5 @@
 import { z } from "zod"
 import { router, protectedProcedure } from "../trpc"
-import type { User } from "next-auth"
 import type { Message } from "../../../types/message"
 
 export const messagesRouter = router({
@@ -14,6 +13,14 @@ export const messagesRouter = router({
             select: {
                 id: true,
                 authorId: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
                 recipientId: true,
                 subject: true,
                 body: true,
@@ -24,36 +31,17 @@ export const messagesRouter = router({
                 files: true,
             },
             orderBy: {
-                createdAt: "desc",
+                updatedAt: "desc",
             },
         })
 
-        const inbox = []
-
-        for (const message of messages) {
-            const author = await ctx.prisma.user.findUnique({
-                where: {
-                    id: message.authorId,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    image: true,
-                },
-            })
-
-            inbox.push({
-                ...message,
-                author: author as User,
-                recipient: ctx.session.user,
-                createdAt: message.createdAt.toISOString(),
-                replyToId: message.replyToId ?? null,
-                files: message.files.map((file) => file.id),
-            })
-        }
-
-        return inbox
+        return messages.map((message) => ({
+            ...message,
+            recipient: ctx.session.user,
+            createdAt: message.createdAt.toISOString(),
+            replyToId: message.replyToId ?? null,
+            files: message.files.map((file) => file.id),
+        }))
     }),
     getSent: protectedProcedure.query(async ({ ctx }): Promise<Message[]> => {
         const messages = await ctx.prisma.message.findMany({
@@ -65,6 +53,14 @@ export const messagesRouter = router({
             select: {
                 id: true,
                 recipientId: true,
+                recipient: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
                 authorId: true,
                 subject: true,
                 body: true,
@@ -75,37 +71,18 @@ export const messagesRouter = router({
                 read: true,
             },
             orderBy: {
-                createdAt: "desc",
+                updatedAt: "desc",
             },
         })
 
-        const sent = []
-
-        for (const message of messages) {
-            const recipient = await ctx.prisma.user.findUnique({
-                where: {
-                    id: message.recipientId as string,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    image: true,
-                },
-            })
-
-            sent.push({
-                ...message,
-                recipient: recipient,
-                author: ctx.session.user,
-                recipientId: message.recipientId as string,
-                createdAt: message.createdAt.toISOString(),
-                replyToId: message.replyToId ?? null,
-                files: message.files.map((file) => file.id),
-            })
-        }
-
-        return sent
+        return messages.map((message) => ({
+            ...message,
+            author: ctx.session.user,
+            recipientId: message.recipientId as string,
+            createdAt: message.createdAt.toISOString(),
+            replyToId: message.replyToId ?? null,
+            files: message.files.map((file) => file.id),
+        }))
     }),
     getDrafts: protectedProcedure.query(async ({ ctx }): Promise<Message[]> => {
         const messages = await ctx.prisma.message.findMany({
@@ -117,13 +94,21 @@ export const messagesRouter = router({
             select: {
                 id: true,
                 authorId: true,
+                recipientId: true,
+                recipient: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
                 subject: true,
                 body: true,
                 createdAt: true,
                 starred: true,
                 replyToId: true,
                 files: true,
-                recipientId: true,
                 read: true,
             },
             orderBy: {
@@ -131,47 +116,13 @@ export const messagesRouter = router({
             },
         })
 
-        const drafts = []
-
-        for (const message of messages) {
-            if (!message.recipientId) {
-                drafts.push({
-                    ...message,
-                    recipient: null,
-                    recipientId: message.recipientId,
-                    author: ctx.session.user,
-                    createdAt: message.createdAt.toISOString(),
-                    replyToId: message.replyToId ?? null,
-                    files: message.files.map((file) => file.id),
-                })
-
-                continue
-            }
-
-            const recipient = await ctx.prisma.user.findUnique({
-                where: {
-                    id: message.recipientId,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    image: true,
-                },
-            })
-
-            drafts.push({
-                ...message,
-                recipient: recipient,
-                author: ctx.session.user,
-                recipientId: message.recipientId as string,
-                createdAt: message.createdAt.toISOString(),
-                replyToId: message.replyToId ?? null,
-                files: message.files.map((file) => file.id),
-            })
-        }
-
-        return drafts
+        return messages.map((message) => ({
+            ...message,
+            author: ctx.session.user,
+            createdAt: message.createdAt.toISOString(),
+            replyToId: message.replyToId ?? null,
+            files: message.files.map((file) => file.id),
+        }))
     }),
     getTrash: protectedProcedure.query(async ({ ctx }): Promise<Message[]> => {
         const messages = await ctx.prisma.message.findMany({
@@ -195,7 +146,23 @@ export const messagesRouter = router({
                 replyToId: true,
                 files: true,
                 recipientId: true,
+                recipient: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
                 authorId: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                    },
+                },
                 read: true,
             },
             orderBy: {
@@ -203,74 +170,12 @@ export const messagesRouter = router({
             },
         })
 
-        const trash = []
-
-        for (const message of messages) {
-            // was draft
-            if (!message.recipientId) {
-                trash.push({
-                    ...message,
-                    recipient: null,
-                    recipientId: message.recipientId,
-                    author: ctx.session.user,
-                    createdAt: message.createdAt.toISOString(),
-                    replyToId: message.replyToId ?? null,
-                    files: message.files.map((file) => file.id),
-                })
-
-                continue
-            }
-
-            // was inbox
-            if (message.recipientId === ctx.session.user.id) {
-                const author = await ctx.prisma.user.findUnique({
-                    where: {
-                        id: message.authorId,
-                    },
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        image: true,
-                    },
-                })
-
-                trash.push({
-                    ...message,
-                    recipient: ctx.session.user,
-                    author: author as User,
-                    createdAt: message.createdAt.toISOString(),
-                    replyToId: message.replyToId ?? null,
-                    files: message.files.map((file) => file.id),
-                })
-
-                continue
-            }
-
-            // was sent
-            const recipient = await ctx.prisma.user.findUnique({
-                where: {
-                    id: message.recipientId,
-                },
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    image: true,
-                },
-            })
-
-            trash.push({
-                ...message,
-                author: ctx.session.user,
-                recipient,
-                createdAt: message.createdAt.toISOString(),
-                replyToId: message.replyToId ?? null,
-                files: message.files.map((file) => file.id),
-            })
-        }
-
-        return trash
+        return messages.map((message) => ({
+            ...message,
+            createdAt: message.createdAt.toISOString(),
+            replyToId: message.replyToId ?? null,
+            files: message.files.map((file) => file.id),
+        }))
     }),
     createMessage: protectedProcedure
         .input(
@@ -330,11 +235,12 @@ export const messagesRouter = router({
                 body: z.string(),
                 // files: z.array(z.string()), // todo
                 recipientId: z.string().optional(),
-                replyToId: z.string().optional(),
+                isDraft: z.boolean(),
+                // replyToId: z.string().optional(),
             })
         )
         .mutation(async ({ ctx, input }) => {
-            return await ctx.prisma.message.update({
+            const message = await ctx.prisma.message.update({
                 where: {
                     id: input.id,
                 },
@@ -342,12 +248,15 @@ export const messagesRouter = router({
                     subject: input.subject,
                     body: input.body,
                     recipientId: input.recipientId,
-                    files: {
-                        connect: [].map((fileId) => ({ id: fileId })), // [] -> input.files
-                    },
-                    replyToId: input.replyToId,
+                    isDraft: input.isDraft,
+                    // replyToId: input.replyToId,
+                },
+                select: {
+                    id: true,
                 },
             })
+
+            return message.id
         }),
     setDeleted: protectedProcedure
         .input(z.string())
@@ -368,11 +277,13 @@ export const messagesRouter = router({
         }),
     deleteMessage: protectedProcedure
         .input(z.string())
-        .mutation(({ ctx, input }) => {
-            return ctx.prisma.message.delete({
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.delete({
                 where: {
                     id: input,
                 },
             })
+
+            return true
         }),
 })

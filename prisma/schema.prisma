@@ -13,7 +13,7 @@ model File {
   createdAt  DateTime  @default(now())
   name       String
   data       Bytes
-  message    Message   @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  message    Message   @relation(fields: [messageId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   messageId  String
 }
 
@@ -23,16 +23,16 @@ model Message {
   updatedAt   DateTime  @updatedAt
   subject     String
   body        String
-  author      User      @relation(name: "author", fields: [authorId], references: [id])
+  author      User      @relation(name: "author", fields: [authorId], references: [id], onUpdate: Cascade, onDelete: NoAction)
   authorId    String
-  recipient   User?     @relation(name: "recipient", fields: [recipientId], references: [id])
+  recipient   User?     @relation(name: "recipient", fields: [recipientId], references: [id], onUpdate: Cascade, onDelete: NoAction)
   recipientId String?
   read        Boolean   @default(false)
   starred     Boolean   @default(false)
   deleted     Boolean   @default(false)
   isDraft     Boolean   @default(false)
   files       File[]
-  replyTo     Message?  @relation(name: "replyTo", fields: [replyToId], references: [id])
+  replyTo     Message?  @relation(name: "replyTo", fields: [replyToId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   replyToId   String?
   replies     Message[] @relation(name: "replyTo")
 }

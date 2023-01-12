@@ -1,4 +1,4 @@
-type TRPCStatus = "success" | "loading" | "error" | "idle"
+export type TRPCStatus = "success" | "loading" | "error" | "idle"
 
 export const isCreated = (status: TRPCStatus) => status === "success"
 

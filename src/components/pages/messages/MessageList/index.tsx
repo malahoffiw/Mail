@@ -1,5 +1,6 @@
 import React from "react"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import type { User } from "next-auth"
 import { HiOutlineUserCircle } from "react-icons/hi2"
 import { TbTrash } from "react-icons/tb"
@@ -8,6 +9,7 @@ import sanitizeHtml from "sanitize-html"
 import { useAppDispatch } from "../../../../hooks/redux"
 import type { MessageType } from "../../../../hooks/store/types"
 import { assignMessage, openModal } from "../../../../store/reducers/modal"
+import { selectDraft, setPending } from "../../../../store/reducers/drafts"
 import { addToTrash } from "../../../../store/utils/deleteThunk"
 import type { Message } from "../../../../types/message"
 import styles from "../../../../styles"
@@ -28,7 +30,14 @@ const sanitize = (html: string) => {
 }
 
 const MessageList = ({ messages, user, currentPage }: MessageListProps) => {
+    const router = useRouter()
     const dispatch = useAppDispatch()
+
+    const openDraft = (message: Message) => {
+        dispatch(setPending(true))
+        dispatch(selectDraft(message))
+        router.push("/new")
+    }
 
     const openMessageModal = (id: string) => {
         dispatch(assignMessage(id))
@@ -46,7 +55,7 @@ const MessageList = ({ messages, user, currentPage }: MessageListProps) => {
         if (currentPage === "sent" && message.recipient)
             return message.recipient.image
 
-        // trash
+        // currentPage === "trash"
         if (message.authorId === user.id && message.recipientId === user.id)
             return message.author.image
         if (message.recipientId === user.id) return message.author.image
@@ -74,7 +83,8 @@ const MessageList = ({ messages, user, currentPage }: MessageListProps) => {
             {messages.map((message) => (
                 <li
                     onClick={() => {
-                        openMessageModal(message.id)
+                        if (currentPage === "drafts") openDraft(message)
+                        else openMessageModal(message.id)
                     }}
                     key={message.id}
                     className={`${styles.transition} ${styles.messageLine}`}
