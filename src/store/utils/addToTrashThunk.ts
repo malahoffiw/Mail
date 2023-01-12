@@ -11,7 +11,7 @@ export const addToTrash = createAsyncThunk(
     }
 )
 
-export const handleDelete = (
+export const handleAddingToTrash = (
     builder: ActionReducerMapBuilder<MessagesStore>
 ) => {
     builder.addCase(addToTrash.fulfilled, (state, action) => {

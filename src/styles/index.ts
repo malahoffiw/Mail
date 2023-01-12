@@ -14,7 +14,7 @@ const styles = {
         "w-full h-10 p-2 mb-2 cursor-pointer rounded " +
         "bg-green hover:brightness-75",
     sidebarMobile:
-        "absolute z-20 top-16 left-0 h-[calc(100vh_-_64px)] " +
+        "absolute z-50 top-16 left-0 h-[calc(100vh_-_64px)] " +
         "flex flex-col gap-2 " +
         "p-4 bg-neutral-900",
     sidebarDesktop: "m-4 mt-2 flex flex-col gap-1 items-center",

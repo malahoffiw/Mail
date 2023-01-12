@@ -3,14 +3,16 @@ import { IoArrowBack } from "react-icons/io5"
 import { ICON_SIZE } from "@/Sidebar"
 import { TbTrash } from "react-icons/tb"
 import { useAppDispatch } from "../../../../hooks/redux"
+import type { MessageType } from "../../../../hooks/store/types"
 import { closeModal } from "../../../../store/reducers/modal"
-import { addToTrash } from "../../../../store/utils/deleteThunk"
+import { addToTrash } from "../../../../store/utils/addToTrashThunk"
 
 type ModalHeaderProps = {
     messageId: string
+    currentPage: MessageType
 }
 
-const ModalHeader = ({ messageId }: ModalHeaderProps) => {
+const ModalHeader = ({ messageId, currentPage }: ModalHeaderProps) => {
     const dispatch = useAppDispatch()
     const closeMessageModal = () => {
         dispatch(closeModal())
@@ -28,11 +30,13 @@ const ModalHeader = ({ messageId }: ModalHeaderProps) => {
                 size={ICON_SIZE}
                 onClick={closeMessageModal}
             />
-            <TbTrash
-                size={ICON_SIZE}
-                className="cursor-pointer"
-                onClick={() => deleteMessage(messageId)}
-            />
+            {currentPage !== "trash" && (
+                <TbTrash
+                    size={ICON_SIZE}
+                    className="cursor-pointer"
+                    onClick={() => deleteMessage(messageId)}
+                />
+            )}
         </div>
     )
 }

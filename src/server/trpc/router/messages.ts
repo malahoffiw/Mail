@@ -284,6 +284,6 @@ export const messagesRouter = router({
                 },
             })
 
-            return true
+            return input
         }),
 })

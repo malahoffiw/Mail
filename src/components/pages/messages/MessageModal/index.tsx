@@ -38,7 +38,7 @@ const MessageModal = ({ user, currentPage }: MessageModalProps) => {
                 "absolute z-10 top-0 left-0 opacity-0 origin-bottom h-full w-full rounded bg-neutral-800 text-neutral-100"
             }
         >
-            <ModalHeader messageId={messageId} />
+            <ModalHeader messageId={messageId} currentPage={currentPage} />
             {!message ? (
                 <Loader />
             ) : (

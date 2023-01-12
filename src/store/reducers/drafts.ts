@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { Message } from "../../types/message"
 import type { DraftStore } from "../../types/store"
 import { client } from "../../utils/trpc"
-import { handleDelete } from "../utils/deleteThunk"
+import { handleAddingToTrash } from "../utils/addToTrashThunk"
 import { handleLoad } from "../utils/loadThunk"
 
 const initialState: DraftStore = {
@@ -38,7 +38,7 @@ export const draftsSlice = createSlice({
                 state.messages = action.payload
             }
         )
-        handleDelete(builder)
+        handleAddingToTrash(builder)
         handleLoad(builder, "drafts/")
     },
 })

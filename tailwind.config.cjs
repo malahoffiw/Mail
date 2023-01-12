@@ -8,6 +8,7 @@ module.exports = {
       lg: ['18px', '26px'],
     },
     colors: {
+      "transparent": "#49505799",
       "neutral": {
         "100": "#f8f9fa",
         "200": "#e9ecef",
