@@ -8,6 +8,7 @@ import { handleLoad } from "../utils/loadThunk"
 
 const initialState: DraftStore = {
     messages: [],
+    searchQuery: "",
     selectedDraft: null,
     pending: false,
     error: false,
@@ -21,6 +22,9 @@ export const draftsSlice = createSlice({
     name: "drafts",
     initialState,
     reducers: {
+        setSearchQuery: (state, action: PayloadAction<string>) => {
+            state.searchQuery = action.payload
+        },
         selectDraft: (state, action: PayloadAction<Message>) => {
             state.selectedDraft = action.payload
         },
@@ -43,5 +47,6 @@ export const draftsSlice = createSlice({
     },
 })
 
-export const { selectDraft, unselectDraft, setPending } = draftsSlice.actions
+export const { selectDraft, unselectDraft, setPending, setSearchQuery } =
+    draftsSlice.actions
 export default draftsSlice.reducer

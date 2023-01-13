@@ -1,26 +1,27 @@
 import React from "react"
 import { IoArrowBack } from "react-icons/io5"
-import { ICON_SIZE } from "@/Sidebar"
 import { TbTrash } from "react-icons/tb"
 import { useAppDispatch } from "../../../../hooks/redux"
 import type { MessageType } from "../../../../hooks/store/types"
+import type { DeleteModalType } from "../../../../hooks/utils/useDeleteModal"
 import { closeModal } from "../../../../store/reducers/modal"
-import { addToTrash } from "../../../../store/utils/addToTrashThunk"
+
+import { ICON_SIZE } from "@/sidebar"
 
 type ModalHeaderProps = {
     messageId: string
     currentPage: MessageType
+    deleteModal: DeleteModalType
 }
 
-const ModalHeader = ({ messageId, currentPage }: ModalHeaderProps) => {
+const ModalHeader = ({
+    messageId,
+    currentPage,
+    deleteModal,
+}: ModalHeaderProps) => {
     const dispatch = useAppDispatch()
     const closeMessageModal = () => {
         dispatch(closeModal())
-    }
-
-    const deleteMessage = (id: string) => {
-        dispatch(addToTrash(id))
-        closeMessageModal()
     }
 
     return (
@@ -30,13 +31,18 @@ const ModalHeader = ({ messageId, currentPage }: ModalHeaderProps) => {
                 size={ICON_SIZE}
                 onClick={closeMessageModal}
             />
-            {currentPage !== "trash" && (
-                <TbTrash
-                    size={ICON_SIZE}
-                    className="cursor-pointer"
-                    onClick={() => deleteMessage(messageId)}
-                />
-            )}
+            <TbTrash
+                size={ICON_SIZE}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    if (currentPage === "trash") {
+                        deleteModal.open(messageId)
+                    } else {
+                        deleteModal.addMessageToTrash(messageId)
+                    }
+                }}
+                className="cursor-pointer"
+            />
         </div>
     )
 }

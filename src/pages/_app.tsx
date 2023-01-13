@@ -10,7 +10,7 @@ import { trpc } from "../utils/trpc"
 
 import "../styles/globals.css"
 
-import Sidebar from "@/Sidebar"
+import Sidebar from "@/sidebar"
 import Header from "@/header"
 
 const MyApp: AppType<{ session: Session | null }> = ({

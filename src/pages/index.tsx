@@ -4,9 +4,9 @@ import { getServerAuthSession } from "../server/common/get-server-auth-session"
 import useMessagesSelector from "../hooks/store/useMessagesSelector"
 import useMessagesInitialize from "../hooks/store/useMessagesInitialize"
 
+import { nameAllowed } from "./auth/signup"
 import Messages from "@/pages/messages"
 import Loader from "@/Loader"
-import { nameAllowed } from "./auth/signup"
 
 const Inbox: NextPage = () => {
     useMessagesInitialize("inbox")

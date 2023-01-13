@@ -8,6 +8,7 @@ import { handleLoad } from "../utils/loadThunk"
 
 const initialState: MessagesStore = {
     messages: [],
+    searchQuery: "",
     pending: false,
     error: false,
 }
@@ -19,7 +20,11 @@ export const loadInbox = createAsyncThunk("inbox/loadInbox", async () => {
 export const inboxSlice = createSlice({
     name: "inbox",
     initialState,
-    reducers: {},
+    reducers: {
+        setSearchQuery: (state, action: PayloadAction<string>) => {
+            state.searchQuery = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(
             loadInbox.fulfilled,
@@ -32,5 +37,5 @@ export const inboxSlice = createSlice({
     },
 })
 
-export const {} = inboxSlice.actions
+export const { setSearchQuery } = inboxSlice.actions
 export default inboxSlice.reducer

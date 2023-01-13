@@ -4,7 +4,7 @@ import { HiOutlineUserCircle } from "react-icons/hi2"
 import type { Message } from "../../../types/message"
 import type { MessageType } from "../../../hooks/store/types"
 
-import { ICON_SIZE_LARGE } from "@/Sidebar"
+import { ICON_SIZE_LARGE } from "@/sidebar"
 
 const getMessageImage = (
     currentPage: MessageType,

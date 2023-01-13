@@ -7,6 +7,7 @@ import { handleLoad } from "../utils/loadThunk"
 
 const initialState: MessagesStore = {
     messages: [],
+    searchQuery: "",
     pending: false,
     error: false,
 }
@@ -25,7 +26,11 @@ export const deleteMessage = createAsyncThunk(
 export const trashSLice = createSlice({
     name: "trash",
     initialState,
-    reducers: {},
+    reducers: {
+        setSearchQuery: (state, action: PayloadAction<string>) => {
+            state.searchQuery = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(
             loadTrash.fulfilled,
@@ -42,5 +47,5 @@ export const trashSLice = createSlice({
     },
 })
 
-export const {} = trashSLice.actions
+export const { setSearchQuery } = trashSLice.actions
 export default trashSLice.reducer

@@ -1,11 +1,13 @@
 import React from "react"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/react"
-import styles from "../../../styles"
 import type { Message } from "../../../types/message"
+import useDeleteModal from "../../../hooks/utils/useDeleteModal"
+import styles from "../../../styles"
 
 import MessageList from "@/pages/messages/MessageList"
 import MessageModal from "@/pages/messages/MessageModal"
+import DeleteModal from "@/pages/messages/DeleteModal"
 import getCurrentPage from "@/pages/utils/getCurrentPage"
 import Loader from "@/Loader"
 
@@ -16,6 +18,8 @@ type MessagesProps = {
 const Messages = ({ messages }: MessagesProps) => {
     const router = useRouter()
     const currentPage = getCurrentPage(router)
+
+    const deleteModal = useDeleteModal()
 
     const { data: session } = useSession()
     if (!session || !session.user) return <Loader />
@@ -35,9 +39,19 @@ const Messages = ({ messages }: MessagesProps) => {
                     messages={messages}
                     user={session.user}
                     currentPage={currentPage}
+                    deleteModal={deleteModal}
                 />
             </ul>
-            <MessageModal user={session.user} currentPage={currentPage} />
+            <DeleteModal
+                isOpen={deleteModal.isOpen}
+                closeModal={deleteModal.close}
+                deleteMessage={deleteModal.deleteMessagePermanently}
+            />
+            <MessageModal
+                user={session.user}
+                currentPage={currentPage}
+                deleteModal={deleteModal}
+            />
         </main>
     )
 }

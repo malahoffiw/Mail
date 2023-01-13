@@ -1,4 +1,14 @@
-import styles from "../../../../styles"
+import { motion } from "framer-motion"
+import styles from "../../../styles"
+
+const animationVariants = {
+    open: {
+        scale: 1,
+    },
+    closed: {
+        scale: 0,
+    },
+}
 
 type DeleteModalProps = {
     isOpen: boolean
@@ -17,10 +27,10 @@ const DeleteModal = ({
                 styles.transition
             } w-full h-full grid bg-transparent place-items-center absolute top-0 left-0`}
         >
-            <div
-                className={`${isOpen ? "scale-100" : "scale-0"} ${
-                    styles.transition
-                } w-64 h-28 text-neutral-100 rounded p-4  bg-neutral-900`}
+            <motion.div
+                animate={isOpen ? "open" : "closed"}
+                variants={animationVariants}
+                className={`w-64 h-28 text-neutral-100 rounded p-4  bg-neutral-900`}
             >
                 <h1 className="w-full h-14 text-center">
                     Are you sure you want to delete this message?
@@ -39,7 +49,7 @@ const DeleteModal = ({
                         Yes
                     </button>
                 </div>
-            </div>
+            </motion.div>
         </div>
     )
 }

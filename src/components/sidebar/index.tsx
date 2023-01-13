@@ -2,17 +2,18 @@ import type { Dispatch, SetStateAction } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { signOut } from "next-auth/react"
 import { motion } from "framer-motion"
-import { BiPencil } from "react-icons/bi"
+import { BiPencil, BiDoorOpen } from "react-icons/bi"
 import { MdOutlineMailOutline } from "react-icons/md"
 import { RiSpam3Line, RiDraftLine } from "react-icons/ri"
 import { TbTrash } from "react-icons/tb"
 import { TiArrowBackOutline } from "react-icons/ti"
 import { FiChevronRight } from "react-icons/fi"
-import useWindowWidth from "../hooks/utils/useWindowWidth"
-import styles from "../styles"
-import { useAppDispatch } from "../hooks/redux"
-import { closeModal } from "../store/reducers/modal"
+import useWindowWidth from "../../hooks/utils/useWindowWidth"
+import { useAppDispatch } from "../../hooks/redux"
+import { closeModal } from "../../store/reducers/modal"
+import styles from "../../styles"
 
 export const ICON_SIZE = 24
 export const ICON_SIZE_LARGE = 32
@@ -66,9 +67,9 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
             <Link
                 href={"/new"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconMain} ${styles.transition} ${
-                    currentPage === "/new" && "pointer-events-none"
-                }`}
+                className={`${styles.sidebarIconMain} ${
+                    styles.transition
+                } bg-green ${currentPage === "/new" && "pointer-events-none"}`}
             >
                 <li className={styles.sidebarBtn}>
                     <BiPencil size={ICON_SIZE} />
@@ -179,6 +180,18 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                     )}
                 </li>
             </Link>
+            <li
+                onClick={() => signOut()}
+                className={`${styles.sidebarIconMain} bg-ruby mt-auto ${styles.transition} ${styles.sidebarBtn}`}
+            >
+                <BiDoorOpen size={ICON_SIZE} />
+                {state === "open" && (
+                    <>
+                        <p>Sign out</p>
+                        <FiChevronRight size={ICON_SIZE} />
+                    </>
+                )}
+            </li>
         </motion.ul>
     )
 }

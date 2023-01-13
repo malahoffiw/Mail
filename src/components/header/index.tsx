@@ -1,11 +1,10 @@
 import type { Dispatch, SetStateAction } from "react"
-import { signOut } from "next-auth/react"
 import { useRouter } from "next/router"
-import dynamic from "next/dynamic"
-import { MdMenu, MdOutlineSearch } from "react-icons/md"
-import useWindowWidth from "../../hooks/utils/useWindowWidth"
-import styles from "../../styles"
-import { ICON_SIZE } from "@/Sidebar"
+import { MdMenu } from "react-icons/md"
+import type { MessageType } from "../../hooks/store/types"
+
+import { ICON_SIZE } from "@/sidebar"
+import SearchBar from "@/header/SearchBar"
 
 type HeaderProps = {
     setSidebarState: Dispatch<SetStateAction<"open" | "closed">>
@@ -22,7 +21,6 @@ const pageNames = {
 
 const Header = ({ setSidebarState }: HeaderProps) => {
     const router = useRouter()
-    const windowWidth = useWindowWidth()
     const currentPage = pageNames[router.pathname as keyof typeof pageNames]
 
     return (
@@ -37,17 +35,15 @@ const Header = ({ setSidebarState }: HeaderProps) => {
                 }
             />
             <h1 className="text-lg font-bold flex items-center gap-2 mr-auto">
-                {windowWidth > 320 && currentPage}
+                {currentPage}
             </h1>
-            <MdOutlineSearch size={ICON_SIZE} />
-            <button
-                className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
-                onClick={() => signOut()}
-            >
-                Sign out
-            </button>
+            {currentPage !== "Compose" && (
+                <SearchBar
+                    currentPage={currentPage.toLowerCase() as MessageType}
+                />
+            )}
         </header>
     )
 }
 
-export default dynamic(() => Promise.resolve(Header), { ssr: false })
+export default Header
