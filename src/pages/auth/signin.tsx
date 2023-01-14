@@ -28,17 +28,17 @@ const Signin = ({ providers }: SignInProps) => {
 
     return (
         <main className="grid h-screen w-screen place-items-center overflow-hidden bg-neutral-900 text-neutral-100">
-            <div className="w-72 sm:w-min h-72 grid-rows-[2fr_1fr] sm:grid-cols-[1fr_2fr] p-4 m-4 grid rounded">
+            <div className="w-72 sm:w-min h-72 grid-rows-[3fr_2fr] sm:grid-cols-[1fr_2fr] p-4 m-4 grid rounded">
                 <div className="flex flex-col items-center justify-center gap-2 rounded-t bg-neutral-100 text-neutral-900 sm:w-56 sm:rounded-t-none sm:rounded-tl sm:rounded-bl">
                     <p className="text-lg">Welcome back!</p>
                     <div className="bg-green h-1.5 w-10/12 rounded"></div>
                     <p className="text-sm">Sign in to continue</p>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-2 rounded-b bg-neutral-800 sm:w-72 sm:rounded-b-none sm:rounded-tr sm:rounded-br">
+                <div className="flex flex-col items-center justify-center gap-2 rounded-b bg-neutral-800 py-4 sm:w-72 sm:rounded-b-none sm:rounded-tr sm:rounded-br">
                     {Object.values(providers).map((provider) => (
                         <div key={provider.name}>
                             <button
-                                className="cursor-pointer rounded p-6 py-2 hover:brightness-75 transition-full bg-green"
+                                className="cursor-pointer rounded p-6 py-2 transition-full bg-green hover:brightness-75"
                                 onClick={() => signIn(provider.id)}
                             >
                                 Sign in with {provider.name}
