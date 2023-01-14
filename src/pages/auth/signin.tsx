@@ -34,7 +34,7 @@ const Signin = ({ providers }: SignInProps) => {
                     <div className="bg-green h-1.5 w-10/12 rounded"></div>
                     <p className="text-sm">Sign in to continue</p>
                 </div>
-                <div className="grid place-items-center rounded-b bg-neutral-800 sm:w-72 sm:rounded-b-none sm:rounded-tr sm:rounded-br">
+                <div className="flex flex-col items-center justify-center gap-2 rounded-b bg-neutral-800 sm:w-72 sm:rounded-b-none sm:rounded-tr sm:rounded-br">
                     {Object.values(providers).map((provider) => (
                         <div key={provider.name}>
                             <button
