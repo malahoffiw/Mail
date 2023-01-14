@@ -57,8 +57,8 @@ const Signup = () => {
     }
 
     return (
-        <main className="w-screen h-screen overflow-hidden bg-neutral-900 text-neutral-100 grid place-items-center">
-            <div className="p-10 m-4 h-72 bg-neutral-800 rounded flex flex-col items-center justify-center gap-6">
+        <main className="grid h-screen w-screen place-items-center overflow-hidden bg-neutral-900 text-neutral-100">
+            <div className="m-4 flex h-72 flex-col items-center justify-center gap-6 rounded bg-neutral-800 p-10">
                 <p className="text-lg">Create a username</p>
                 <SignupForm
                     onSubmit={onSubmit}

@@ -10,7 +10,6 @@ import type { DeleteModalType } from "../../../../hooks/utils/useDeleteModal"
 import { assignMessage, openModal } from "../../../../store/reducers/modal"
 import { selectDraft, setPending } from "../../../../store/reducers/drafts"
 import type { Message } from "../../../../types/message"
-import styles from "../../../../styles"
 
 import getMessageImage from "@/pages/utils/getMessageImagePath"
 
@@ -57,7 +56,7 @@ const MessageList = ({
                         else openMessageModal(message.id)
                     }}
                     key={message.id}
-                    className={`${styles.transition} ${styles.messageLine}`}
+                    className="transition-full group grid grid-cols-[40px_minmax(140px,_1fr)_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125"
                 >
                     <div>{getMessageImage(currentPage, user.id, message)}</div>
                     <div className="relative w-full">
@@ -67,11 +66,11 @@ const MessageList = ({
                                 ? "{ Empty message }"
                                 : message.subject}
                         </p>
-                        <p className="text-sm text-neutral-600 break-words">
+                        <p className="break-words text-sm text-neutral-600">
                             {sanitize(message.body)}
                         </p>
                     </div>
-                    <div className="relative justify-self-end flex flex-col justify-between items-end">
+                    <div className="relative flex flex-col items-end justify-between justify-self-end">
                         <p className="text-sm text-neutral-600">
                             {dayjs(message.createdAt).format("DD/MM")}
                         </p>
@@ -85,7 +84,7 @@ const MessageList = ({
                                     deleteModal.addMessageToTrash(message.id)
                                 }
                             }}
-                            className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-neutral-600 sm:hover:text-neutral-100 sm:cursor-pointer"
+                            className="text-neutral-600 opacity-100 sm:group-hover:opacity-100 sm:hover:text-neutral-100 sm:cursor-pointer sm:opacity-0"
                         />
                     </div>
                 </li>

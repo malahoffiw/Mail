@@ -25,7 +25,7 @@ const ModalHeader = ({
     }
 
     return (
-        <div className="px-4 w-full flex items-center justify-between bg-green h-10">
+        <div className="flex h-10 w-full items-center justify-between px-4 bg-green">
             <IoArrowBack
                 className="cursor-pointer"
                 size={ICON_SIZE}

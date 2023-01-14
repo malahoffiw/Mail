@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
-import styles from "../../styles"
 
 type SignupFormProps = {
     onSubmit: (username: string) => void
@@ -26,7 +25,7 @@ const SignupForm = ({ onSubmit, isUsernameTaken }: SignupFormProps) => {
         >
             <input
                 // todo - onInvalid try to use custom
-                className={`outline-0 border-0 text-neutral-900 p-4 py-1 rounded`}
+                className="rounded border-0 p-4 py-1 text-neutral-900 outline-0"
                 type="text"
                 placeholder="Username"
                 value={username}
@@ -39,6 +38,7 @@ const SignupForm = ({ onSubmit, isUsernameTaken }: SignupFormProps) => {
             />
             <motion.p
                 className="text-center text-xs text-yellow"
+                transition={{ type: "spring", bounce: 0, duration: 0.4 }}
                 animate={isTaken ? "open" : "closed"}
                 variants={variants}
             >
@@ -46,7 +46,7 @@ const SignupForm = ({ onSubmit, isUsernameTaken }: SignupFormProps) => {
             </motion.p>
             <button
                 type={"submit"}
-                className={`${styles.btnLarge} ${styles.transition} text-neutral-100 bg-green`}
+                className="cursor-pointer rounded p-6 py-2 text-neutral-100 transition-full bg-green hover:brightness-75"
             >
                 Create account
             </button>

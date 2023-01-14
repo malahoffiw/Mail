@@ -24,7 +24,7 @@ const Header = ({ setSidebarState }: HeaderProps) => {
     const currentPage = pageNames[router.pathname as keyof typeof pageNames]
 
     return (
-        <header className="col-span-2 border-b flex gap-4 text-neutral-100 h-14 items-center px-6">
+        <header className="col-span-2 flex h-14 items-center gap-4 border-b px-6 text-neutral-100">
             <MdMenu
                 className="cursor-pointer hover:scale-110"
                 size={ICON_SIZE}
@@ -34,7 +34,7 @@ const Header = ({ setSidebarState }: HeaderProps) => {
                     )
                 }
             />
-            <h1 className="text-lg font-bold flex items-center gap-2 mr-auto">
+            <h1 className="mr-auto flex items-center gap-2 text-lg font-bold">
                 {currentPage}
             </h1>
             {currentPage !== "Compose" && (

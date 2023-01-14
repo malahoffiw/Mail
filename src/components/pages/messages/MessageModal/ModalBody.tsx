@@ -1,8 +1,8 @@
 import React from "react"
+import type { User } from "next-auth"
 import dayjs from "dayjs"
 import parse from "html-react-parser"
 import type { Message } from "../../../../types/message"
-import type { User } from "next-auth"
 
 type MessageBodyProps = {
     message: Message
@@ -11,7 +11,7 @@ type MessageBodyProps = {
 
 const ModalBody = ({ message, user }: MessageBodyProps) => {
     return (
-        <div className="p-4 flex flex-col items-center gap-2 text-neutral-900">
+        <div className="flex flex-col items-center gap-2 p-4 text-neutral-900">
             <label className="bg-neutral-100 text-neutral-600 px-4 py-1 w-full rounded grid grid-cols-[80px_1fr]">
                 Author
                 {message.authorId !== user.id ? (

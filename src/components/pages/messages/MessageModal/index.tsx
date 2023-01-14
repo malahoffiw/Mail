@@ -39,10 +39,9 @@ const MessageModal = ({
     return (
         <motion.div
             animate={isOpen ? "open" : "closed"}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
             variants={animationVariants}
-            className={
-                "absolute z-10 top-0 left-0 opacity-0 origin-bottom h-full w-full rounded bg-neutral-800 text-neutral-100"
-            }
+            className="absolute top-0 left-0 z-10 h-full w-full origin-bottom rounded bg-neutral-800 text-neutral-100 opacity-0"
         >
             <ModalHeader
                 messageId={messageId}

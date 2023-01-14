@@ -13,7 +13,8 @@ import { FiChevronRight } from "react-icons/fi"
 import useWindowWidth from "../../hooks/utils/useWindowWidth"
 import { useAppDispatch } from "../../hooks/redux"
 import { closeModal } from "../../store/reducers/modal"
-import styles from "../../styles"
+
+import SidebarBtn from "@/sidebar/SidebarBtn"
 
 export const ICON_SIZE = 24
 export const ICON_SIZE_LARGE = 32
@@ -40,6 +41,34 @@ const animationVariants = {
     },
 }
 
+const linkPages = [
+    {
+        linkTo: "/",
+        icon: <MdOutlineMailOutline size={ICON_SIZE} />,
+        name: "Inbox",
+    },
+    {
+        linkTo: "/sent",
+        icon: <TiArrowBackOutline size={ICON_SIZE} />,
+        name: "Sent",
+    },
+    {
+        linkTo: "/drafts",
+        icon: <RiDraftLine size={ICON_SIZE} />,
+        name: "Drafts",
+    },
+    {
+        linkTo: "/spam",
+        icon: <RiSpam3Line size={ICON_SIZE} />,
+        name: "Spam",
+    },
+    {
+        linkTo: "/trash",
+        icon: <TbTrash size={ICON_SIZE} />,
+        name: "Trash",
+    },
+]
+
 const Sidebar = ({ state, setState }: SidebarProps) => {
     const windowWidth = useWindowWidth()
     const router = useRouter()
@@ -52,26 +81,35 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
         dispatch(closeModal())
     }
 
+    const sidebarButtons = linkPages.map((linkPage) => (
+        <SidebarBtn
+            key={linkPage.linkTo}
+            isOpen={state === "open"}
+            closeSidebar={closeSidebar}
+            currentPage={currentPage}
+            linkPage={linkPage}
+        />
+    ))
+
     return (
         <motion.ul
             animate={state}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
             variants={
                 windowWidth > 640
                     ? animationVariants.desktop
                     : animationVariants.mobile
             }
-            className={
-                windowWidth > 640 ? styles.sidebarDesktop : styles.sidebarMobile
-            }
+            className={windowWidth > 640 ? "sidebar-desktop" : "sidebar-mobile"}
         >
             <Link
                 href={"/new"}
                 onClick={closeSidebar}
-                className={`${styles.sidebarIconMain} ${
-                    styles.transition
-                } bg-green ${currentPage === "/new" && "pointer-events-none"}`}
+                className={`mb-2 h-10 w-full cursor-pointer rounded p-2 hover:brightness-75 transition-full bg-green ${
+                    currentPage === "/new" && "pointer-events-none"
+                }`}
             >
-                <li className={styles.sidebarBtn}>
+                <li className="btn-sidebar">
                     <BiPencil size={ICON_SIZE} />
                     {state === "open" && (
                         <>
@@ -81,108 +119,12 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
                     )}
                 </li>
             </Link>
-            <Link
-                href={"/"}
-                onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${
-                    styles.transition
-                } ${
-                    currentPage === "/" && "pointer-events-none brightness-150"
-                }`}
-            >
-                <li className={styles.sidebarBtn}>
-                    <MdOutlineMailOutline size={ICON_SIZE} />
-                    {state === "open" && (
-                        <>
-                            <p>Inbox</p>
-                            <FiChevronRight size={ICON_SIZE} />
-                        </>
-                    )}
-                </li>
-            </Link>
-            <Link
-                href={"/sent"}
-                onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${
-                    styles.transition
-                } ${
-                    currentPage === "/sent" &&
-                    "pointer-events-none brightness-150"
-                }`}
-            >
-                <li className={styles.sidebarBtn}>
-                    <TiArrowBackOutline size={ICON_SIZE} />
-                    {state === "open" && (
-                        <>
-                            <p>Sent</p>
-                            <FiChevronRight size={ICON_SIZE} />
-                        </>
-                    )}
-                </li>
-            </Link>
-            <Link
-                href={"/drafts"}
-                onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${
-                    styles.transition
-                } ${
-                    currentPage === "/drafts" &&
-                    "pointer-events-none brightness-150"
-                }`}
-            >
-                <li className={styles.sidebarBtn}>
-                    <RiDraftLine size={ICON_SIZE} />
-                    {state === "open" && (
-                        <>
-                            <p>Drafts</p>
-                            <FiChevronRight size={ICON_SIZE} />
-                        </>
-                    )}
-                </li>
-            </Link>
-            <Link
-                href={"/"}
-                onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${
-                    styles.transition
-                } ${
-                    currentPage === "/spam" &&
-                    "pointer-events-none brightness-150"
-                }`}
-            >
-                <li className={styles.sidebarBtn}>
-                    <RiSpam3Line size={ICON_SIZE} />
-                    {state === "open" && (
-                        <>
-                            <p>Spam</p>
-                            <FiChevronRight size={ICON_SIZE} />
-                        </>
-                    )}
-                </li>
-            </Link>
-            <Link
-                href={"/trash"}
-                onClick={closeSidebar}
-                className={`${styles.sidebarIconSecondary} ${
-                    styles.transition
-                } ${
-                    currentPage === "/trash" &&
-                    "pointer-events-none brightness-150"
-                }`}
-            >
-                <li className={styles.sidebarBtn}>
-                    <TbTrash size={ICON_SIZE} />
-                    {state === "open" && (
-                        <>
-                            <p>Trash</p>
-                            <FiChevronRight size={ICON_SIZE} />
-                        </>
-                    )}
-                </li>
-            </Link>
+
+            {sidebarButtons}
+
             <li
                 onClick={() => signOut()}
-                className={`${styles.sidebarIconMain} bg-ruby mt-auto ${styles.transition} ${styles.sidebarBtn}`}
+                className="mt-auto mb-2 h-10 w-full cursor-pointer rounded p-2 bg-ruby transition-full btn-sidebar hover:brightness-75"
             >
                 <BiDoorOpen size={ICON_SIZE} />
                 {state === "open" && (

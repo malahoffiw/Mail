@@ -1,21 +1,20 @@
 import React from "react"
 import { useRouter } from "next/router"
-import styles from "../../../../styles"
 
 const FormFooter = () => {
     const router = useRouter()
 
     return (
-        <footer className="self-end flex gap-2">
+        <footer className="flex gap-2 self-end">
             <button
                 onClick={() => router.back()}
-                className={`${styles.btnSmall} ${styles.transition} bg-ruby`}
+                className="cursor-pointer rounded p-4 py-1 transition-full bg-ruby hover:brightness-75"
                 type="button"
             >
                 Back
             </button>
             <button
-                className={`${styles.btnSmall} ${styles.transition} bg-green`}
+                className="cursor-pointer rounded p-4 py-1 transition-full bg-green hover:brightness-75"
                 type="submit"
             >
                 Send
