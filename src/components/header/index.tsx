@@ -15,7 +15,6 @@ const pageNames = {
     "/sent": "Sent",
     "/drafts": "Drafts",
     "/trash": "Trash",
-    "/spam": "Spam",
     "/new": "Compose",
 }
 

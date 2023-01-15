@@ -36,6 +36,12 @@ export const trashSLice = createSlice({
     name: "trash",
     initialState,
     reducers: {
+        setStarred: (state, action: PayloadAction<{ id: string; starred: boolean }>) => {
+            const message = state.messages.find((message) => message.id === action.payload.id)
+            if (message) {
+                message.starred = action.payload.starred
+            }
+        },
         setSearchQuery: (state, action: PayloadAction<string>) => {
             state.searchQuery = action.payload
         },
@@ -51,5 +57,5 @@ export const trashSLice = createSlice({
     },
 })
 
-export const { setSearchQuery } = trashSLice.actions
+export const { setStarred, setSearchQuery } = trashSLice.actions
 export default trashSLice.reducer

@@ -34,6 +34,12 @@ export const inboxSlice = createSlice({
     name: "inbox",
     initialState,
     reducers: {
+        setStarred: (state, action: PayloadAction<{ id: string; starred: boolean }>) => {
+            const message = state.messages.find((message) => message.id === action.payload.id)
+            if (message) {
+                message.starred = action.payload.starred
+            }
+        },
         setSearchQuery: (state, action: PayloadAction<string>) => {
             state.searchQuery = action.payload
         },
@@ -49,5 +55,5 @@ export const inboxSlice = createSlice({
     },
 })
 
-export const { setSearchQuery } = inboxSlice.actions
+export const { setStarred, setSearchQuery } = inboxSlice.actions
 export default inboxSlice.reducer

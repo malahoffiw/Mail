@@ -2,7 +2,6 @@ import React from "react"
 import { useRouter } from "next/router"
 import type { User } from "next-auth"
 import dayjs from "dayjs"
-import sanitizeHtml from "sanitize-html"
 import { TbTrash } from "react-icons/tb"
 import { useAppDispatch } from "../../../../hooks/redux"
 import type { MessageType } from "../../../../hooks/store/types"
@@ -12,13 +11,9 @@ import { selectDraft, setPending } from "../../../../store/reducers/drafts"
 import type { Message } from "../../../../types/message"
 
 import getMessageImage from "@/pages/utils/getMessageImagePath"
-
-const sanitize = (html: string) => {
-    return sanitizeHtml(html, {
-        allowedTags: [],
-        allowedAttributes: {},
-    })
-}
+import MessageLineBody from "@/pages/messages/MessageList/MessageLineBody"
+import { ICON_SIZE_SMALL } from "@/sidebar"
+import MessageLineStar from "@/pages/messages/MessageList/MessageLineStar"
 
 type MessageListProps = {
     messages: Message[]
@@ -51,25 +46,17 @@ const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListPr
                         else openMessageModal(message.id)
                     }}
                     key={message.id}
-                    className="transition-full group grid grid-cols-[40px_minmax(140px,_1fr)_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125"
+                    className="transition-full group grid grid-cols-[40px_minmax(120px,_1fr)_20px_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125"
                 >
                     <div>{getMessageImage(currentPage, user.id, message)}</div>
-                    <div className="relative w-full">
-                        <p>
-                            {message.subject.length === 0 && message.body.length === 0
-                                ? "{ Empty message }"
-                                : message.subject}
-                        </p>
-                        <p className="break-words text-sm text-neutral-600">
-                            {sanitize(message.body)}
-                        </p>
-                    </div>
+                    <MessageLineBody message={message} />
+                    <MessageLineStar currentPage={currentPage} message={message} />
                     <div className="relative flex flex-col items-end justify-between justify-self-end">
                         <p className="text-sm text-neutral-600">
                             {dayjs(message.createdAt).format("DD/MM")}
                         </p>
                         <TbTrash
-                            size={16}
+                            size={ICON_SIZE_SMALL}
                             onClick={(e) => {
                                 e.stopPropagation()
                                 if (currentPage === "trash") {

@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react"
 import { motion } from "framer-motion"
 import { BiPencil, BiDoorOpen } from "react-icons/bi"
 import { MdOutlineMailOutline } from "react-icons/md"
-import { RiSpam3Line, RiDraftLine } from "react-icons/ri"
+import { RiDraftLine } from "react-icons/ri"
 import { TbTrash } from "react-icons/tb"
 import { TiArrowBackOutline } from "react-icons/ti"
 import { FiChevronRight } from "react-icons/fi"
@@ -16,6 +16,7 @@ import { closeModal } from "../../store/reducers/modal"
 
 import SidebarBtn from "@/sidebar/SidebarBtn"
 
+export const ICON_SIZE_SMALL = 16
 export const ICON_SIZE = 24
 export const ICON_SIZE_LARGE = 32
 
@@ -56,11 +57,6 @@ const linkPages = [
         linkTo: "/drafts",
         icon: <RiDraftLine size={ICON_SIZE} />,
         name: "Drafts",
-    },
-    {
-        linkTo: "/spam",
-        icon: <RiSpam3Line size={ICON_SIZE} />,
-        name: "Spam",
     },
     {
         linkTo: "/trash",

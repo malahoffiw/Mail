@@ -25,6 +25,12 @@ export const draftsSlice = createSlice({
     name: "drafts",
     initialState,
     reducers: {
+        setStarred: (state, action: PayloadAction<{ id: string; starred: boolean }>) => {
+            const message = state.messages.find((message) => message.id === action.payload.id)
+            if (message) {
+                message.starred = action.payload.starred
+            }
+        },
         setSearchQuery: (state, action: PayloadAction<string>) => {
             state.searchQuery = action.payload
         },
@@ -49,5 +55,6 @@ export const draftsSlice = createSlice({
     },
 })
 
-export const { selectDraft, unselectDraft, setPending, setSearchQuery } = draftsSlice.actions
+export const { setStarred, selectDraft, unselectDraft, setPending, setSearchQuery } =
+    draftsSlice.actions
 export default draftsSlice.reducer

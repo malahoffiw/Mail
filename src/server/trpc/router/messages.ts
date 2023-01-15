@@ -277,6 +277,44 @@ export const messagesRouter = router({
 
             return message.id
         }),
+    setStarredByAuthor: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                starred: z.boolean(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.update({
+                where: {
+                    id: input.id,
+                },
+                data: {
+                    starredByAuthor: input.starred,
+                },
+            })
+
+            return input
+        }),
+    setStarredByRecipient: protectedProcedure
+        .input(
+            z.object({
+                id: z.string(),
+                starred: z.boolean(),
+            })
+        )
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.update({
+                where: {
+                    id: input.id,
+                },
+                data: {
+                    starredByRecipient: input.starred,
+                },
+            })
+
+            return input
+        }),
     setTrashByAuthor: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
         await ctx.prisma.message.update({
             where: {
