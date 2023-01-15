@@ -217,6 +217,7 @@ export const messagesRouter = router({
         .mutation(async ({ ctx, input }) => {
             return await ctx.prisma.message.create({
                 data: {
+                    updatedAt: new Date(),
                     subject: input.subject,
                     body: input.body,
                     authorId: ctx.session.user.id,
@@ -238,6 +239,7 @@ export const messagesRouter = router({
         .mutation(async ({ ctx, input }) => {
             return await ctx.prisma.message.create({
                 data: {
+                    updatedAt: new Date(),
                     subject: input.subject,
                     body: input.body,
                     authorId: ctx.session.user.id,
@@ -264,6 +266,7 @@ export const messagesRouter = router({
                     id: input.id,
                 },
                 data: {
+                    updatedAt: new Date(),
                     subject: input.subject,
                     body: input.body,
                     recipientId: input.recipientId,
