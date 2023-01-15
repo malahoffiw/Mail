@@ -95,11 +95,7 @@ const Sidebar = ({ state, setState }: SidebarProps) => {
         <motion.ul
             animate={state}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            variants={
-                windowWidth > 640
-                    ? animationVariants.desktop
-                    : animationVariants.mobile
-            }
+            variants={windowWidth > 640 ? animationVariants.desktop : animationVariants.mobile}
             className={windowWidth > 640 ? "sidebar-desktop" : "sidebar-mobile"}
         >
             <Link

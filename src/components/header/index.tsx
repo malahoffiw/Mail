@@ -29,18 +29,12 @@ const Header = ({ setSidebarState }: HeaderProps) => {
                 className="cursor-pointer hover:scale-110"
                 size={ICON_SIZE}
                 onClick={() =>
-                    setSidebarState((prevState) =>
-                        prevState === "open" ? "closed" : "open"
-                    )
+                    setSidebarState((prevState) => (prevState === "open" ? "closed" : "open"))
                 }
             />
-            <h1 className="mr-auto flex items-center gap-2 text-lg font-bold">
-                {currentPage}
-            </h1>
+            <h1 className="mr-auto flex items-center gap-2 text-lg font-bold">{currentPage}</h1>
             {currentPage !== "Compose" && (
-                <SearchBar
-                    currentPage={currentPage.toLowerCase() as MessageType}
-                />
+                <SearchBar currentPage={currentPage.toLowerCase() as MessageType} />
             )}
         </header>
     )

@@ -30,12 +30,7 @@ const useDraftMutation = () => {
     )
 
     const updateDraft = useCallback(
-        async (
-            draftId: string,
-            recipientId: string,
-            subject: string,
-            editorContent: string
-        ) => {
+        async (draftId: string, recipientId: string, subject: string, editorContent: string) => {
             updateSelectedDraft({
                 id: draftId,
                 subject,

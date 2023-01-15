@@ -27,12 +27,7 @@ type MessageListProps = {
     deleteModal: DeleteModalType
 }
 
-const MessageList = ({
-    messages,
-    user,
-    currentPage,
-    deleteModal,
-}: MessageListProps) => {
+const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListProps) => {
     const router = useRouter()
     const dispatch = useAppDispatch()
 
@@ -61,8 +56,7 @@ const MessageList = ({
                     <div>{getMessageImage(currentPage, user.id, message)}</div>
                     <div className="relative w-full">
                         <p>
-                            {message.subject.length === 0 &&
-                            message.body.length === 0
+                            {message.subject.length === 0 && message.body.length === 0
                                 ? "{ Empty message }"
                                 : message.subject}
                         </p>

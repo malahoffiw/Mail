@@ -1,15 +1,8 @@
 import type { ActionReducerMapBuilder } from "@reduxjs/toolkit"
 import type { MessagesStore } from "../../types/store"
-import {
-    isFulfilledAction,
-    isPendingAction,
-    isRejectedAction,
-} from "./helpersAsync"
+import { isFulfilledAction, isPendingAction, isRejectedAction } from "./helpersAsync"
 
-export const handleLoad = (
-    builder: ActionReducerMapBuilder<MessagesStore>,
-    prefix: string
-) => {
+export const handleLoad = (builder: ActionReducerMapBuilder<MessagesStore>, prefix: string) => {
     builder
         .addMatcher(isPendingAction(prefix), (state) => {
             state.pending = true

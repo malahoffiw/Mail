@@ -17,11 +17,7 @@ const useNewMessageMutation = () => {
         return "idle"
     }
 
-    const createMessage = async (
-        recipientId: string,
-        subject: string,
-        editorContent: string
-    ) => {
+    const createMessage = async (recipientId: string, subject: string, editorContent: string) => {
         createNewMessage({
             subject,
             recipientId,

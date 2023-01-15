@@ -3,7 +3,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import type { Message } from "../../types/message"
 import type { DraftStore } from "../../types/store"
 import { client } from "../../utils/trpc"
-import { handleAddingToTrash } from "../utils/addToTrashThunk"
 import { handleLoad } from "../utils/loadThunk"
 
 const initialState: DraftStore = {
@@ -16,6 +15,10 @@ const initialState: DraftStore = {
 
 export const loadDrafts = createAsyncThunk("drafts/loadDrafts", async () => {
     return await client.messages.getDrafts.query()
+})
+
+export const addToTrash = createAsyncThunk("drafts/addToTrash", async (id: string) => {
+    return await client.messages.setTrashByAuthor.mutate(id)
 })
 
 export const draftsSlice = createSlice({
@@ -36,17 +39,15 @@ export const draftsSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(
-            loadDrafts.fulfilled,
-            (state, action: PayloadAction<Message[]>) => {
-                state.messages = action.payload
-            }
-        )
-        handleAddingToTrash(builder)
+        builder.addCase(loadDrafts.fulfilled, (state, action: PayloadAction<Message[]>) => {
+            state.messages = action.payload
+        })
+        builder.addCase(addToTrash.fulfilled, (state, action) => {
+            state.messages = state.messages.filter((message) => message.id !== action.payload)
+        })
         handleLoad(builder, "drafts/")
     },
 })
 
-export const { selectDraft, unselectDraft, setPending, setSearchQuery } =
-    draftsSlice.actions
+export const { selectDraft, unselectDraft, setPending, setSearchQuery } = draftsSlice.actions
 export default draftsSlice.reducer

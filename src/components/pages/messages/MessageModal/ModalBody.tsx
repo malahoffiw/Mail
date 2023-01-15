@@ -23,9 +23,7 @@ const ModalBody = ({ message, user }: MessageBodyProps) => {
             <label className="bg-neutral-100 text-neutral-600 px-4 py-1 w-full rounded grid grid-cols-[80px_1fr]">
                 Recipient
                 {message.recipientId !== user.id ? (
-                    <p className="text-neutral-900">
-                        {message.recipient?.name}
-                    </p>
+                    <p className="text-neutral-900">{message.recipient?.name}</p>
                 ) : (
                     <p className="text-neutral-900">Me</p>
                 )}

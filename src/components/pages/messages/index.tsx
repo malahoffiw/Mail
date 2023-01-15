@@ -18,7 +18,7 @@ const Messages = ({ messages }: MessagesProps) => {
     const router = useRouter()
     const currentPage = getCurrentPage(router)
 
-    const deleteModal = useDeleteModal()
+    const deleteModal = useDeleteModal(currentPage)
 
     const { data: session } = useSession()
     if (!session || !session.user) return <Loader />
@@ -46,11 +46,7 @@ const Messages = ({ messages }: MessagesProps) => {
                 closeModal={deleteModal.close}
                 deleteMessage={deleteModal.deleteMessagePermanently}
             />
-            <MessageModal
-                user={session.user}
-                currentPage={currentPage}
-                deleteModal={deleteModal}
-            />
+            <MessageModal user={session.user} currentPage={currentPage} deleteModal={deleteModal} />
         </main>
     )
 }

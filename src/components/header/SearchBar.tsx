@@ -10,10 +10,7 @@ type SearchBarProps = {
     currentPage: MessageType
 }
 
-const animationKeyframe = (
-    el: Element,
-    action: "add" | "remove" | "remain"
-) => {
+const animationKeyframe = (el: Element, action: "add" | "remove" | "remain") => {
     let keyframes: Keyframe[] = []
 
     if (action === "add") {

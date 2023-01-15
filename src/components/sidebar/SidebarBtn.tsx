@@ -15,19 +15,13 @@ type SidebarBtnProps = {
     }
 }
 
-const SidebarBtn = ({
-    isOpen,
-    closeSidebar,
-    currentPage,
-    linkPage,
-}: SidebarBtnProps) => {
+const SidebarBtn = ({ isOpen, closeSidebar, currentPage, linkPage }: SidebarBtnProps) => {
     return (
         <Link
             href={linkPage.linkTo}
             onClick={closeSidebar}
             className={`h-10 w-full cursor-pointer rounded bg-neutral-800 p-2 hover:brightness-150 transition-full ${
-                currentPage === linkPage.linkTo &&
-                "pointer-events-none brightness-150"
+                currentPage === linkPage.linkTo && "pointer-events-none brightness-150"
             }`}
         >
             <li className="btn-sidebar">

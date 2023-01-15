@@ -15,11 +15,7 @@ type DeleteModalProps = {
     deleteMessage: () => void
 }
 
-const DeleteModal = ({
-    isOpen,
-    deleteMessage,
-    closeModal,
-}: DeleteModalProps) => {
+const DeleteModal = ({ isOpen, deleteMessage, closeModal }: DeleteModalProps) => {
     return (
         <div
             className={`${

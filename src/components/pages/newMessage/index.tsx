@@ -26,12 +26,9 @@ const MessageForm = () => {
 
     const editorRef = useRef<Editor | null>(null)
     const [subject, setSubject] = useState(initialFormContent.subject)
-    const [recipient, setRecipient] = useState<Recipient>(
-        initialFormContent.recipient
-    )
+    const [recipient, setRecipient] = useState<Recipient>(initialFormContent.recipient)
 
-    const { updateDraftIntoNewMessage, createMessage, getMessageStatus } =
-        useNewMessageMutation()
+    const { updateDraftIntoNewMessage, createMessage, getMessageStatus } = useNewMessageMutation()
     const { createDraft, updateDraft, getDraftStatus } = useDraftMutation()
 
     useEffect(() => {
@@ -65,11 +62,7 @@ const MessageForm = () => {
                     editorRef.current?.getContent() ?? ""
                 )
             } else {
-                await createDraft(
-                    recipient.id,
-                    subject,
-                    editorRef.current?.getContent() || ""
-                )
+                await createDraft(recipient.id, subject, editorRef.current?.getContent() || "")
             }
         }
         return
@@ -99,11 +92,7 @@ const MessageForm = () => {
                     editorRef.current?.getContent() || ""
                 )
             } else {
-                await createMessage(
-                    recipient.id,
-                    subject,
-                    editorRef.current?.getContent() || ""
-                )
+                await createMessage(recipient.id, subject, editorRef.current?.getContent() || "")
             }
         } else {
             // todo - handle this beautifully
@@ -129,15 +118,9 @@ const MessageForm = () => {
             }}
             className="flex flex-col gap-2"
         >
-            <FormRecipientInput
-                recipient={recipient}
-                setRecipient={setRecipient}
-            />
+            <FormRecipientInput recipient={recipient} setRecipient={setRecipient} />
             <FormSubjectInput subject={subject} setSubject={setSubject} />
-            <MessageEditor
-                editorRef={editorRef}
-                initialContent={initialFormContent.body}
-            />
+            <MessageEditor editorRef={editorRef} initialContent={initialFormContent.body} />
             <FormFooter />
         </form>
     )

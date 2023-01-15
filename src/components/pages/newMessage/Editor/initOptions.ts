@@ -16,8 +16,7 @@ const initOptions = {
         "image",
         "fullscreen",
     ],
-    quickbars_selection_toolbar:
-        "bold italic underline | quicklink blockquote | removeformat",
+    quickbars_selection_toolbar: "bold italic underline | quicklink blockquote | removeformat",
     quickbars_insert_toolbar: "quickimage quicktable media | bullist numlist",
     quickbars_image_toolbar: "alignleft aligncenter alignright ",
     toolbar:

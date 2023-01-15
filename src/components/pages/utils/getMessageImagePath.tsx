@@ -6,17 +6,11 @@ import type { MessageType } from "../../../hooks/store/types"
 
 import { ICON_SIZE_LARGE } from "@/sidebar"
 
-const getMessageImage = (
-    currentPage: MessageType,
-    userId: string,
-    message: Message
-) => {
+const getMessageImage = (currentPage: MessageType, userId: string, message: Message) => {
     const getMessageImagePath = () => {
         if (currentPage === "inbox") return message.author.image
-        if (currentPage === "drafts" && message.recipient)
-            return message.recipient.image
-        if (currentPage === "sent" && message.recipient)
-            return message.recipient.image
+        if (currentPage === "drafts" && message.recipient) return message.recipient.image
+        if (currentPage === "sent" && message.recipient) return message.recipient.image
 
         // currentPage === "trash"
         if (message.authorId === userId && message.recipientId === userId)

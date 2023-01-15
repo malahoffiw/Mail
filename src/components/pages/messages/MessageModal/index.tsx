@@ -25,11 +25,7 @@ type MessageModalProps = {
     deleteModal: DeleteModalType
 }
 
-const MessageModal = ({
-    user,
-    currentPage,
-    deleteModal,
-}: MessageModalProps) => {
+const MessageModal = ({ user, currentPage, deleteModal }: MessageModalProps) => {
     const isOpen = useAppSelector((state) => state.modal.isOpen)
     const messageId = useAppSelector((state) => state.modal.messageId)
 
@@ -48,11 +44,7 @@ const MessageModal = ({
                 currentPage={currentPage}
                 deleteModal={deleteModal}
             />
-            {!message ? (
-                <Loader />
-            ) : (
-                <ModalBody message={message} user={user} />
-            )}
+            {!message ? <Loader /> : <ModalBody message={message} user={user} />}
         </motion.div>
     )
 }

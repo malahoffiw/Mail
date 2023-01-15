@@ -10,7 +10,6 @@ export interface Message {
     subject: string
     body: string
     replyToId: string | null
-    files?: string[] // File[]
     createdAt: string
     starred: boolean
 }

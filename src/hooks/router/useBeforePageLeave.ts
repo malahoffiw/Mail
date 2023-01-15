@@ -4,10 +4,7 @@ import { useRouter } from "next/router"
 
 // Should pass a dependency array very carefully
 // or apply useCallback before passing callback here
-const UseBeforePageLeave = (
-    callback: () => void,
-    deps: DependencyList = []
-) => {
+const UseBeforePageLeave = (callback: () => void, deps: DependencyList = []) => {
     const router = useRouter()
 
     useEffect(() => {

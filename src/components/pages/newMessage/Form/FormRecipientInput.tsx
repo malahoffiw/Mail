@@ -8,10 +8,7 @@ type FormRecipientInputProps = {
     setRecipient: React.Dispatch<React.SetStateAction<Recipient>>
 }
 
-const FormRecipientInput = ({
-    recipient,
-    setRecipient,
-}: FormRecipientInputProps) => {
+const FormRecipientInput = ({ recipient, setRecipient }: FormRecipientInputProps) => {
     return (
         <label className="text-neutral-600 bg-neutral-100 pl-4 rounded grid grid-cols-[40px_1fr] items-center gap-2">
             To

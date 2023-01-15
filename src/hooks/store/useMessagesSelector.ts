@@ -7,9 +7,7 @@ const useMessagesSelector = (type: MessageType) => {
         pending: state[type].pending,
         error: state[type].error,
     }))
-    const messages = useAppSelector((state) =>
-        selectFilteredMessages(state[type])
-    )
+    const messages = useAppSelector((state) => selectFilteredMessages(state[type]))
 
     return { status, messages }
 }

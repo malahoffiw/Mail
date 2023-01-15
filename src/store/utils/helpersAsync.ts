@@ -1,7 +1,6 @@
 import type { AnyAction } from "@reduxjs/toolkit"
 
-const hasPrefix = (action: AnyAction, prefix: string) =>
-    action.type.startsWith(prefix)
+const hasPrefix = (action: AnyAction, prefix: string) => action.type.startsWith(prefix)
 const isPending = (action: AnyAction) => action.type.endsWith("/pending")
 const isFulfilled = (action: AnyAction) => action.type.endsWith("/fulfilled")
 const isRejected = (action: AnyAction) => action.type.endsWith("/rejected")

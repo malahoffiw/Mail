@@ -18,12 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
             },
         }
 
-    if (
-        session &&
-        session.user &&
-        session.user.name &&
-        nameAllowed.test(session.user.name)
-    )
+    if (session && session.user && session.user.name && nameAllowed.test(session.user.name))
         return {
             redirect: {
                 destination: "/",
@@ -60,10 +55,7 @@ const Signup = () => {
         <main className="grid h-screen w-screen place-items-center overflow-hidden bg-neutral-900 text-neutral-100">
             <div className="m-4 flex h-72 flex-col items-center justify-center gap-6 rounded bg-neutral-800 p-10">
                 <p className="text-lg">Create a username</p>
-                <SignupForm
-                    onSubmit={onSubmit}
-                    isUsernameTaken={isUsernameTaken}
-                />
+                <SignupForm onSubmit={onSubmit} isUsernameTaken={isUsernameTaken} />
             </div>
         </main>
     )

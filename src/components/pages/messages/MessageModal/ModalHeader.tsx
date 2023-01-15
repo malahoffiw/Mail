@@ -14,11 +14,7 @@ type ModalHeaderProps = {
     deleteModal: DeleteModalType
 }
 
-const ModalHeader = ({
-    messageId,
-    currentPage,
-    deleteModal,
-}: ModalHeaderProps) => {
+const ModalHeader = ({ messageId, currentPage, deleteModal }: ModalHeaderProps) => {
     const dispatch = useAppDispatch()
     const closeMessageModal = () => {
         dispatch(closeModal())
@@ -26,11 +22,7 @@ const ModalHeader = ({
 
     return (
         <div className="flex h-10 w-full items-center justify-between px-4 bg-green">
-            <IoArrowBack
-                className="cursor-pointer"
-                size={ICON_SIZE}
-                onClick={closeMessageModal}
-            />
+            <IoArrowBack className="cursor-pointer" size={ICON_SIZE} onClick={closeMessageModal} />
             <TbTrash
                 size={ICON_SIZE}
                 onClick={(e) => {

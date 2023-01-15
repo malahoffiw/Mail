@@ -16,12 +16,21 @@ export const loadTrash = createAsyncThunk("trash/loadTrash", async () => {
     return await client.messages.getTrash.query()
 })
 
-export const deleteMessage = createAsyncThunk(
-    "trash/deleteMessage",
-    async (id: string) => {
-        return await client.messages.deleteMessage.mutate(id)
+export const deleteMessage = createAsyncThunk("trash/deleteMessage", async (id: string) => {
+    const userType = await client.messages.getUserTypeForMessageById.query(id)
+
+    switch (userType) {
+        case "author":
+            return await client.messages.setDeletedByAuthor.mutate(id)
+        case "recipient":
+            return await client.messages.setDeletedByRecipient.mutate(id)
+        case "both":
+            await client.messages.setDeletedByAuthor.mutate(id)
+            return await client.messages.setDeletedByRecipient.mutate(id)
+        default:
+            return null
     }
-)
+})
 
 export const trashSLice = createSlice({
     name: "trash",
@@ -32,16 +41,11 @@ export const trashSLice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(
-            loadTrash.fulfilled,
-            (state, action: PayloadAction<Message[]>) => {
-                state.messages = action.payload
-            }
-        )
+        builder.addCase(loadTrash.fulfilled, (state, action: PayloadAction<Message[]>) => {
+            state.messages = action.payload
+        })
         builder.addCase(deleteMessage.fulfilled, (state, action) => {
-            state.messages = state.messages.filter(
-                (message) => message.id !== action.payload
-            )
+            state.messages = state.messages.filter((message) => message.id !== action.payload)
         })
         handleLoad(builder, "trash/")
     },
