@@ -16,21 +16,41 @@ export const loadTrash = createAsyncThunk("trash/loadTrash", async () => {
     return await client.messages.getTrash.query()
 })
 
-export const deleteMessage = createAsyncThunk("trash/deleteMessage", async (id: string) => {
-    const userType = await client.messages.getUserTypeForMessageById.query(id)
+export const deleteMessages = createAsyncThunk(
+    "trash/deleteMultipleMessages",
+    async (ids: string[]) => {
+        const userTypes = await client.messages.getUserTypeForMessageByIdMultiple.query(ids)
 
-    switch (userType) {
-        case "author":
-            return await client.messages.setDeletedByAuthor.mutate(id)
-        case "recipient":
-            return await client.messages.setDeletedByRecipient.mutate(id)
-        case "both":
-            await client.messages.setDeletedByAuthor.mutate(id)
-            return await client.messages.setDeletedByRecipient.mutate(id)
-        default:
-            return null
+        const deletedByAuthor = []
+        const deletedByRecipient = []
+
+        for (const [id, type] of userTypes.entries()) {
+            switch (type) {
+                case "author":
+                    deletedByAuthor.push(id)
+                    break
+                case "recipient":
+                    deletedByRecipient.push(id)
+                    break
+                case "both":
+                    deletedByAuthor.push(id)
+                    deletedByRecipient.push(id)
+                    break
+                default:
+                    break
+            }
+        }
+
+        if (deletedByAuthor.length > 0) {
+            await client.messages.setDeletedByAuthor.mutate(deletedByAuthor)
+        }
+        if (deletedByRecipient.length > 0) {
+            await client.messages.setDeletedByRecipient.mutate(deletedByRecipient)
+        }
+
+        return ids
     }
-})
+)
 
 export const trashSLice = createSlice({
     name: "trash",
@@ -50,8 +70,10 @@ export const trashSLice = createSlice({
         builder.addCase(loadTrash.fulfilled, (state, action: PayloadAction<Message[]>) => {
             state.messages = action.payload
         })
-        builder.addCase(deleteMessage.fulfilled, (state, action) => {
-            state.messages = state.messages.filter((message) => message.id !== action.payload)
+        builder.addCase(deleteMessages.fulfilled, (state, action) => {
+            state.messages = state.messages.filter(
+                (message) => !action.payload.includes(message.id)
+            )
         })
         handleLoad(builder, "trash/")
     },

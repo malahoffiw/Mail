@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/router"
 import type { User } from "next-auth"
 import dayjs from "dayjs"
@@ -10,10 +10,12 @@ import { assignMessage, openModal } from "../../../../store/reducers/modal"
 import { selectDraft, setPending } from "../../../../store/reducers/drafts"
 import type { Message } from "../../../../types/message"
 
+import { ICON_SIZE_SMALL } from "@/sidebar"
 import getMessageImage from "@/pages/utils/getMessageImagePath"
 import MessageLineBody from "@/pages/messages/MessageList/MessageLineBody"
-import { ICON_SIZE_SMALL } from "@/sidebar"
 import MessageLineStar from "@/pages/messages/MessageList/MessageLineStar"
+import MessageLineCheckbox from "@/pages/messages/MessageList/MessageLineCheckbox"
+import MessageListHeader from "@/pages/messages/MessageListHeader"
 
 type MessageListProps = {
     messages: Message[]
@@ -25,6 +27,8 @@ type MessageListProps = {
 const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListProps) => {
     const router = useRouter()
     const dispatch = useAppDispatch()
+
+    const [selectedMessages, setSelectedMessages] = useState(new Set<string>())
 
     const openDraft = (message: Message) => {
         dispatch(setPending(true))
@@ -39,6 +43,13 @@ const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListPr
 
     return (
         <>
+            <MessageListHeader
+                selectedMessages={selectedMessages}
+                setSelectedMessages={setSelectedMessages}
+                messages={messages}
+                deleteModal={deleteModal}
+                currentPage={currentPage}
+            />
             {messages.map((message) => (
                 <li
                     onClick={() => {
@@ -46,9 +57,16 @@ const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListPr
                         else openMessageModal(message.id)
                     }}
                     key={message.id}
-                    className="transition-full group grid grid-cols-[40px_minmax(120px,_1fr)_20px_48px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125"
+                    className="transition-full group grid grid-cols-[20px_40px_minmax(110px,_1fr)_20px_40px] gap-1 min-h-[48px] bg-neutral-800 p-1 rounded cursor-pointer hover:brightness-125"
                 >
-                    <div>{getMessageImage(currentPage, user.id, message)}</div>
+                    <MessageLineCheckbox
+                        selectedMessages={selectedMessages}
+                        setSelectedMessages={setSelectedMessages}
+                        messageId={message.id}
+                    />
+                    <div className="grid place-items-center">
+                        {getMessageImage(currentPage, user.id, message)}
+                    </div>
                     <MessageLineBody message={message} />
                     <MessageLineStar currentPage={currentPage} message={message} />
                     <div className="relative flex flex-col items-end justify-between justify-self-end">
@@ -62,7 +80,7 @@ const MessageList = ({ messages, user, currentPage, deleteModal }: MessageListPr
                                 if (currentPage === "trash") {
                                     deleteModal.open(message.id)
                                 } else {
-                                    deleteModal.addMessageToTrash(message.id)
+                                    deleteModal.addMessageToTrash([message.id])
                                 }
                             }}
                             className="text-neutral-600 opacity-100 sm:group-hover:opacity-100 sm:hover:text-neutral-100 sm:cursor-pointer sm:opacity-0"

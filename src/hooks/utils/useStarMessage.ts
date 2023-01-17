@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAppDispatch } from "../redux"
 import type { MessageType } from "../store/types"
-import { setStarredInDB } from "../../store/utils/starMessage"
+import { setStarredInDB } from "../../store/utils/setStarredInDB"
 
 const UseStarMessage = (currentPage: MessageType, starred: boolean) => {
     const dispatch = useAppDispatch()
@@ -15,10 +15,6 @@ const UseStarMessage = (currentPage: MessageType, starred: boolean) => {
     useEffect(() => {
         import(`src/store/reducers/${currentPage}`).then((module) => {
             const { setStarred } = module
-
-            if (currentPage === "trash") {
-                return
-            }
 
             setStarMessage(() => (id: string) => {
                 dispatch(setStarred({ id, starred: !starred }))

@@ -28,6 +28,36 @@ export const messagesRouter = router({
                 return "recipient"
             }
         }),
+    getUserTypeForMessageByIdMultiple: protectedProcedure
+        .input(z.array(z.string()))
+        .query(async ({ ctx, input }): Promise<Map<string, string>> => {
+            const messages = await ctx.prisma.message.findMany({
+                where: {
+                    id: {
+                        in: input,
+                    },
+                },
+                select: {
+                    id: true,
+                    authorId: true,
+                    recipientId: true,
+                },
+            })
+
+            const userTypes = new Map()
+
+            messages.forEach((message) => {
+                if (message.authorId === message.recipientId) {
+                    userTypes.set(message.id, "both")
+                } else if (message.authorId === ctx.session.user.id) {
+                    userTypes.set(message.id, "author")
+                } else {
+                    userTypes.set(message.id, "recipient")
+                }
+            })
+
+            return userTypes
+        }),
     getInbox: protectedProcedure.query(async ({ ctx }): Promise<Message[]> => {
         const messages = await ctx.prisma.message.findMany({
             where: {
@@ -318,54 +348,70 @@ export const messagesRouter = router({
 
             return input
         }),
-    setTrashByAuthor: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-        await ctx.prisma.message.update({
-            where: {
-                id: input,
-            },
-            data: {
-                trashByAuthor: true,
-            },
-        })
+    setTrashByAuthor: protectedProcedure
+        .input(z.array(z.string()))
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.updateMany({
+                where: {
+                    id: {
+                        in: input,
+                    },
+                },
+                data: {
+                    trashByAuthor: true,
+                },
+            })
 
-        return input
-    }),
-    setTrashByRecipient: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-        await ctx.prisma.message.update({
-            where: {
-                id: input,
-            },
-            data: {
-                trashByRecipient: true,
-            },
-        })
+            return input
+        }),
+    setTrashByRecipient: protectedProcedure
+        .input(z.array(z.string()))
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.updateMany({
+                where: {
+                    id: {
+                        in: input,
+                    },
+                },
+                data: {
+                    trashByRecipient: true,
+                },
+            })
 
-        return input
-    }),
-    setDeletedByAuthor: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-        await ctx.prisma.message.update({
-            where: {
-                id: input,
-            },
-            data: {
-                deletedByAuthor: true,
-            },
-        })
+            return input
+        }),
+    setDeletedByAuthor: protectedProcedure
+        .input(z.array(z.string()))
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.updateMany({
+                where: {
+                    id: {
+                        in: input,
+                    },
+                },
+                data: {
+                    deletedByAuthor: true,
+                },
+            })
 
-        return input
-    }),
-    setDeletedByRecipient: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
-        await ctx.prisma.message.update({
-            where: {
-                id: input,
-            },
-            data: {
-                deletedByRecipient: true,
-            },
-        })
+            return input
+        }),
+    setDeletedByRecipient: protectedProcedure
+        .input(z.array(z.string()))
+        .mutation(async ({ ctx, input }) => {
+            await ctx.prisma.message.updateMany({
+                where: {
+                    id: {
+                        in: input,
+                    },
+                },
+                data: {
+                    deletedByRecipient: true,
+                },
+            })
 
-        return input
-    }),
+            return input
+        }),
     deleteMessage: protectedProcedure.input(z.string()).mutation(async ({ ctx, input }) => {
         await ctx.prisma.message.delete({
             where: {

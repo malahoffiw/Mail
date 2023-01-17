@@ -16,18 +16,34 @@ export const loadSent = createAsyncThunk("sent/loadSent", async () => {
     return await client.messages.getSent.query()
 })
 
-export const addToTrash = createAsyncThunk("sent/addToTrash", async (id: string) => {
-    const userType = await client.messages.getUserTypeForMessageById.query(id)
+export const addToTrash = createAsyncThunk("sent/addToTrash", async (ids: string[]) => {
+    const userTypes = await client.messages.getUserTypeForMessageByIdMultiple.query(ids)
 
-    switch (userType) {
-        case "author":
-            return await client.messages.setTrashByAuthor.mutate(id)
-        case "both":
-            await client.messages.setTrashByAuthor.mutate(id)
-            return await client.messages.setTrashByRecipient.mutate(id)
-        default:
-            return null
+    const deletedByAuthor = []
+    const deletedByRecipient = []
+
+    for (const [id, type] of userTypes.entries()) {
+        switch (type) {
+            case "author":
+                deletedByAuthor.push(id)
+                break
+            case "both":
+                deletedByAuthor.push(id)
+                deletedByRecipient.push(id)
+                break
+            default:
+                break
+        }
     }
+
+    if (deletedByAuthor.length > 0) {
+        await client.messages.setTrashByAuthor.mutate(deletedByAuthor)
+    }
+    if (deletedByRecipient.length > 0) {
+        await client.messages.setTrashByRecipient.mutate(deletedByRecipient)
+    }
+
+    return ids
 })
 
 export const sentSlice = createSlice({
@@ -49,7 +65,9 @@ export const sentSlice = createSlice({
             state.messages = action.payload
         })
         builder.addCase(addToTrash.fulfilled, (state, action) => {
-            state.messages = state.messages.filter((message) => message.id !== action.payload)
+            state.messages = state.messages.filter(
+                (message) => !action.payload.includes(message.id)
+            )
         })
         handleLoad(builder, "sent/")
     },

@@ -30,7 +30,7 @@ const ModalHeader = ({ messageId, currentPage, deleteModal }: ModalHeaderProps) 
                     if (currentPage === "trash") {
                         deleteModal.open(messageId)
                     } else {
-                        deleteModal.addMessageToTrash(messageId)
+                        deleteModal.addMessageToTrash([messageId])
                     }
                 }}
                 className="cursor-pointer"

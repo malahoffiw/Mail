@@ -41,11 +41,7 @@ const Messages = ({ messages }: MessagesProps) => {
                     deleteModal={deleteModal}
                 />
             </ul>
-            <DeleteModal
-                isOpen={deleteModal.isOpen}
-                closeModal={deleteModal.close}
-                deleteMessage={deleteModal.deleteMessagePermanently}
-            />
+            <DeleteModal deleteModal={deleteModal} />
             <MessageModal user={session.user} currentPage={currentPage} deleteModal={deleteModal} />
         </main>
     )

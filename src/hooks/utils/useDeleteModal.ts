@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useAppDispatch } from "../redux"
-import { deleteMessage } from "../../store/reducers/trash"
+import { deleteMessages } from "../../store/reducers/trash"
 import type { MessageType } from "../store/types"
 
 const useDeleteModal = (currentPage: MessageType) => {
@@ -8,9 +8,11 @@ const useDeleteModal = (currentPage: MessageType) => {
 
     // required unused variable to declare type of mutable ref
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [addMessageToTrash, setAddMessageToTrash] = useState<(id: string) => void>(() => () => {
-        return
-    })
+    const [addMessagesToTrash, setAddMessagesToTrash] = useState<(ids: string[]) => void>(
+        () => () => {
+            return
+        }
+    )
 
     useEffect(() => {
         import(`src/store/reducers/${currentPage}`).then((module) => {
@@ -20,34 +22,39 @@ const useDeleteModal = (currentPage: MessageType) => {
                 return
             }
 
-            setAddMessageToTrash(() => (id: string) => {
-                dispatch(addToTrash(id))
+            setAddMessagesToTrash(() => (ids: string[]) => {
+                dispatch(addToTrash(ids))
             })
         })
     }, [currentPage, dispatch])
 
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedMessageId, setSelectedMessageId] = useState("")
+    const [selectedMessageIds, setSelectedMessageIds] = useState<string[]>([])
 
-    const open = (id: string) => {
+    const open = (id: string | string[]) => {
         setIsOpen(true)
-        setSelectedMessageId(id)
+        if (typeof id === "string") {
+            setSelectedMessageIds([id])
+        } else {
+            setSelectedMessageIds(id)
+        }
     }
 
     const close = () => {
         setIsOpen(false)
-        setSelectedMessageId("")
+        setSelectedMessageIds([])
     }
 
     const deleteMessagePermanently = () => {
-        dispatch(deleteMessage(selectedMessageId))
+        dispatch(deleteMessages(selectedMessageIds))
     }
 
     return {
+        amountSelected: selectedMessageIds.length,
         isOpen,
         open,
         close,
-        addMessageToTrash,
+        addMessageToTrash: addMessagesToTrash,
         deleteMessagePermanently,
     }
 }

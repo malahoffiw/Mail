@@ -17,8 +17,10 @@ export const loadDrafts = createAsyncThunk("drafts/loadDrafts", async () => {
     return await client.messages.getDrafts.query()
 })
 
-export const addToTrash = createAsyncThunk("drafts/addToTrash", async (id: string) => {
-    return await client.messages.setTrashByAuthor.mutate(id)
+export const addToTrash = createAsyncThunk("drafts/addToTrash", async (ids: string[]) => {
+    await client.messages.setTrashByAuthor.mutate(ids)
+
+    return ids
 })
 
 export const draftsSlice = createSlice({
@@ -49,7 +51,9 @@ export const draftsSlice = createSlice({
             state.messages = action.payload
         })
         builder.addCase(addToTrash.fulfilled, (state, action) => {
-            state.messages = state.messages.filter((message) => message.id !== action.payload)
+            state.messages = state.messages.filter(
+                (message) => !action.payload.includes(message.id)
+            )
         })
         handleLoad(builder, "drafts/")
     },

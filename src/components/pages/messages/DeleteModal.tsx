@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import type { DeleteModalType } from "../../../hooks/utils/useDeleteModal"
 
 const animationVariants = {
     open: {
@@ -10,12 +11,12 @@ const animationVariants = {
 }
 
 type DeleteModalProps = {
-    isOpen: boolean
-    closeModal: () => void
-    deleteMessage: () => void
+    deleteModal: DeleteModalType
 }
 
-const DeleteModal = ({ isOpen, deleteMessage, closeModal }: DeleteModalProps) => {
+const DeleteModal = ({ deleteModal }: DeleteModalProps) => {
+    const { amountSelected, isOpen, close, deleteMessagePermanently } = deleteModal
+
     return (
         <div
             className={`${
@@ -34,18 +35,20 @@ const DeleteModal = ({ isOpen, deleteMessage, closeModal }: DeleteModalProps) =>
                 className="w-64 h-28 text-neutral-100 rounded p-4  bg-neutral-900"
             >
                 <h1 className="h-14 w-full text-center">
-                    Are you sure you want to delete this message?
+                    {amountSelected === 1
+                        ? "Are you sure you want to delete this message?"
+                        : `Are you sure you want to delete ${amountSelected} messages?`}
                 </h1>
                 <div className="flex h-6 justify-between">
                     <button
                         className="h-full w-1/3 rounded transition-full bg-ruby hover:brightness-75"
-                        onClick={closeModal}
+                        onClick={close}
                     >
                         No
                     </button>
                     <button
                         className="h-full w-1/3 rounded transition-full bg-green hover:brightness-75"
-                        onClick={deleteMessage}
+                        onClick={deleteMessagePermanently}
                     >
                         Yes
                     </button>

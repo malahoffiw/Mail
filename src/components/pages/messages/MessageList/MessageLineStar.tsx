@@ -12,7 +12,7 @@ type MessageLineStarProps = {
     message: Message
 }
 
-const animationKeyframe = (el: Element, action: "add" | "remove" | "remain") => {
+export const animationKeyframe = (el: Element, action: "add" | "remove" | "remain") => {
     let keyframes: Keyframe[] = []
 
     if (action === "add") {
